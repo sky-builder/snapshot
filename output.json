@@ -1,0 +1,152 @@
+{
+  "numFailedTestSuites": 0,
+  "numFailedTests": 0,
+  "numPassedTestSuites": 1,
+  "numPassedTests": 9,
+  "numPendingTestSuites": 0,
+  "numPendingTests": 0,
+  "numRuntimeErrorTestSuites": 0,
+  "numTodoTests": 0,
+  "numTotalTestSuites": 1,
+  "numTotalTests": 9,
+  "openHandles": [],
+  "snapshot": {
+    "added": 0,
+    "didUpdate": true,
+    "failure": false,
+    "filesAdded": 0,
+    "filesRemoved": 0,
+    "filesRemovedList": [],
+    "filesUnmatched": 0,
+    "filesUpdated": 0,
+    "matched": 8,
+    "total": 8,
+    "unchecked": 0,
+    "uncheckedKeysByFile": [],
+    "unmatched": 0,
+    "updated": 0
+  },
+  "startTime": 1608196083445,
+  "success": true,
+  "testResults": [
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "北京市十一学校超级管理员(bjssyxxadmin)",
+            "2020-2021学年度第一学期直升初二地理(43257)",
+            "命题质量报表"
+          ],
+          "failureMessages": [],
+          "fullName": "北京市十一学校超级管理员(bjssyxxadmin) 2020-2021学年度第一学期直升初二地理(43257) 命题质量报表 报表视图",
+          "location": null,
+          "status": "passed",
+          "title": "报表视图"
+        },
+        {
+          "ancestorTitles": [
+            "北京市十一学校超级管理员(bjssyxxadmin)",
+            "2020-2021学年度第一学期直升初二地理(43257)",
+            "命题质量报表"
+          ],
+          "failureMessages": [],
+          "fullName": "北京市十一学校超级管理员(bjssyxxadmin) 2020-2021学年度第一学期直升初二地理(43257) 命题质量报表 PDF 视图",
+          "location": null,
+          "status": "passed",
+          "title": "PDF 视图"
+        },
+        {
+          "ancestorTitles": [
+            "北京市十一学校超级管理员(bjssyxxadmin)",
+            "2020-2021学年度第一学期直升初二地理(43257)",
+            "教师教学质量分析报告"
+          ],
+          "failureMessages": [],
+          "fullName": "北京市十一学校超级管理员(bjssyxxadmin) 2020-2021学年度第一学期直升初二地理(43257) 教师教学质量分析报告 报表",
+          "location": null,
+          "status": "passed",
+          "title": "报表"
+        },
+        {
+          "ancestorTitles": [
+            "北京市十一学校超级管理员(bjssyxxadmin)",
+            "2020-2021学年度第一学期直升初二地理(43257)",
+            "校级分析报告"
+          ],
+          "failureMessages": [],
+          "fullName": "北京市十一学校超级管理员(bjssyxxadmin) 2020-2021学年度第一学期直升初二地理(43257) 校级分析报告 报表",
+          "location": null,
+          "status": "passed",
+          "title": "报表"
+        },
+        {
+          "ancestorTitles": [
+            "北京市十一学校超级管理员(bjssyxxadmin)",
+            "2020-2021学年度第一学期直升初二地理(43257)",
+            "校级分析报告"
+          ],
+          "failureMessages": [],
+          "fullName": "北京市十一学校超级管理员(bjssyxxadmin) 2020-2021学年度第一学期直升初二地理(43257) 校级分析报告 pdf",
+          "location": null,
+          "status": "passed",
+          "title": "pdf"
+        },
+        {
+          "ancestorTitles": [
+            "北京市十一学校超级管理员(bjssyxxadmin)",
+            "2020-2021学年度第一学期直升初二地理(43257)",
+            "班级分析报告"
+          ],
+          "failureMessages": [],
+          "fullName": "北京市十一学校超级管理员(bjssyxxadmin) 2020-2021学年度第一学期直升初二地理(43257) 班级分析报告 报表",
+          "location": null,
+          "status": "passed",
+          "title": "报表"
+        },
+        {
+          "ancestorTitles": [
+            "北京市十一学校超级管理员(bjssyxxadmin)",
+            "2020-2021学年度第一学期直升初二地理(43257)",
+            "学生成绩分析"
+          ],
+          "failureMessages": [],
+          "fullName": "北京市十一学校超级管理员(bjssyxxadmin) 2020-2021学年度第一学期直升初二地理(43257) 学生成绩分析 直升初19级4班 => 丁涵",
+          "location": null,
+          "status": "passed",
+          "title": "直升初19级4班 => 丁涵"
+        },
+        {
+          "ancestorTitles": [
+            "北京市十一学校超级管理员(bjssyxxadmin)",
+            "2020-2021学年度第一学期直升初二地理(43257)",
+            "必备知识、关键能力与学科素养分析报告"
+          ],
+          "failureMessages": [],
+          "fullName": "北京市十一学校超级管理员(bjssyxxadmin) 2020-2021学年度第一学期直升初二地理(43257) 必备知识、关键能力与学科素养分析报告 报表",
+          "location": null,
+          "status": "passed",
+          "title": "报表"
+        },
+        {
+          "ancestorTitles": [
+            "北京市十一学校超级管理员(bjssyxxadmin)",
+            "2020-2021学年度第一学期直升初二地理(43257)",
+            "必备知识、关键能力与学科素养分析报告"
+          ],
+          "failureMessages": [],
+          "fullName": "北京市十一学校超级管理员(bjssyxxadmin) 2020-2021学年度第一学期直升初二地理(43257) 必备知识、关键能力与学科素养分析报告 pdf",
+          "location": null,
+          "status": "passed",
+          "title": "pdf"
+        }
+      ],
+      "endTime": 1608196177506,
+      "message": "",
+      "name": "G:\\jest-snapshot\\test\\bjssyxxadmin\\43257\\index.js",
+      "startTime": 1608196084286,
+      "status": "passed",
+      "summary": ""
+    }
+  ],
+  "wasInterrupted": false
+}
