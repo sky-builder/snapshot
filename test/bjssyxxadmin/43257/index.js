@@ -2,6 +2,10 @@ const { toMatchImageSnapshot } = require("jest-image-snapshot");
 const puppeteer = require("puppeteer");
 const config = require("./config");
 const axios = require('axios')
+const fs =require('fs')
+const mg = require('merge-img')
+const util = require("util")
+
 
 const loginApi = `http://testyezhi.haofenshu.com/api/hfsfx/fxyz/v1/fx/200511/yj-token?username=${config.userInfo.id}&password=`
 let cookie;
@@ -61,58 +65,127 @@ async function driver(path, waitFor) {
 describe(userDesc, () => {
   describe(examDesc, () => {
     describe('命题质量报表', () => {
-      test('报表视图', async () => {
-        const page = await browser.newPage();
-        page.setDefaultTimeout(60 * 1000 * 2);
-        await page.setCookie(cookie);
+      // test('报表视图', async () => {
+      //   const page = await browser.newPage();
+      //   page.setDefaultTimeout(60 * 1000 * 2);
+      //   await page.setCookie(cookie);
 
-        const REPORT_PATH = '/report/question?examid=1142516-84&grade=直升高一&org=0';
-        const REPORT_URL = `${config.host}${REPORT_PATH}`
-        try {
-          await page.goto(REPORT_URL, {
-              // 等待页面加载, 直到 500ms 内没有网络请求
-              // 另一种等待方式, 比较麻烦: 找出页面用到的所有接口, 使用 waitForResponse 等待所有接口返回
-              waitUntil: "networkidle0",
-            }
-          );
-          await page.waitForFunction("document.querySelectorAll('canvas').length === 10");
-          // 到此, 应该所有接口都已经请求完毕, 预留渲染时间
-          const image = await page.screenshot({
-            fullPage: true,
-          });
-          expect(image).toMatchImageSnapshot();
-        } catch (error) {
-          await page.screenshot({path: `report-error-${new Date().toLocaleString()}.png`})
-          throw error;
-        }
-      })
+      //   const REPORT_PATH = '/report/question?examid=1142516-84&grade=直升高一&org=0';
+      //   const REPORT_URL = `${config.host}${REPORT_PATH}`
+      //   try {
+      //     await page.goto(REPORT_URL, {
+      //         // 等待页面加载, 直到 500ms 内没有网络请求
+      //         // 另一种等待方式, 比较麻烦: 找出页面用到的所有接口, 使用 waitForResponse 等待所有接口返回
+      //         waitUntil: "networkidle0",
+      //       }
+      //     );
+      //     await page.waitForFunction("document.querySelectorAll('canvas').length === 10");
+      //     // 到此, 应该所有接口都已经请求完毕, 预留渲染时间
+      //     const image = await page.screenshot({
+      //       fullPage: true,
+      //     });
+      //     expect(image).toMatchImageSnapshot();
+      //   } catch (error) {
+      //     await page.screenshot({path: `report-error-${new Date().toLocaleString()}.png`})
+      //     throw error;
+      //   }
+      // })
       test('PDF 视图', async () => {
         const page = await browser.newPage();
-        page.setDefaultTimeout(60 * 1000 * 2);
+        page.setDefaultTimeout(60 * 1000 * 3);
         await page.setCookie(cookie);
         const PDF_PATH = '/report/export/pdf?export=true&report=question&examid=1142516-84&org=0&pindex=4409166';
         const PDF_URL = `${config.host}${PDF_PATH}`
+        // const PDF_URL = `http://127.0.0.1:8080/%E5%A5%BD%E5%88%86%E6%95%B0-%E5%88%86%E6%9E%90.html`
         try {
-        await page.goto(PDF_URL, {
+          await page.goto(PDF_URL, {
             // 等待页面加载, 直到 500ms 内没有网络请求
             waitUntil: "networkidle0",
           }
         );
-        await page.waitForFunction("document.querySelectorAll('canvas').length === 12");
+        // await page.waitForFunction("document.querySelectorAll('canvas').length === 12");
         await page.waitForSelector('.index-tree');
         await page.waitForFunction('document.querySelector(".el-loading-mask.is-fullscreen").style.display === "none"')
         // 到此, 应该所有接口都已经请求完毕, 预留渲染时间
-        const image = await page.screenshot({
-          fullPage: true,
+        // const image = await page.screenshot({
+        //   fullPage: true,
+        // });
+        
+        // await page.screenshot({fullPage: true, path: 'full.png'})
+        async function f(page) {
+          const bugMaxHeight = 15 * 1024;
+          const dpr = page.viewport().deviceScaleFactor || 1;
+          const maxScreenshotHeight = Math.floor( bugMaxHeight / dpr );
+          const imgArr = [];
+          const body = await page.$('body');
+          const contentSize = await body.boundingBox(); 
+          console.log({contentSize})
+          await page.setViewport({
+            width: Math.ceil(contentSize.width),
+            height: Math.ceil(contentSize.height)
+          })
+          // 小于16 * 1024像素高的图片直接截图
+          if ( contentSize.height < maxScreenshotHeight ) {
+            // 防止意外发生未关闭标签页造成内存爆炸
+            let timeoutID = setTimeout( () => page.close(), 2e4 )
+
+            return page.screenshot( {
+              fullPage: true
+            } ).then( buffer => ( clearTimeout( timeoutID ), page.close(), buffer ) );
+          }
+          // 大于16 * 1024高度的图片循环截图 放在系统提供的缓存里
+          let index=1;
+          for ( let ypos = 0; ypos < contentSize.height; ypos += maxScreenshotHeight ) {
+            const height = Math.min( contentSize.height - ypos, maxScreenshotHeight );
+            let tmpName = `img-${index}.png`;
+            console.log({tmpName})
+            index += 1;
+            await page.screenshot( {
+              path: tmpName,
+              clip: {
+                x: 0,
+                y: ypos,
+                width: contentSize.width,
+                height
+              }
+            } ) 
+            // console.log({tmpName}, ypos, height, contentSize.width)
+            imgArr.push( tmpName )
+          }
+          return imgArr;
+        }
+        let arr = await f(page);
+        // console.log({arr})
+        // let arr = ['1.jpg', '2.jpg']
+
+        // let arr = ['img-1.png', 'img-2.png']
+        console.log({arr})
+        let img = await mg(arr, {
+          direction: true
         });
+        // let w = util.promisify(img.write);
+        img.write2 = util.promisify(img.write);
+        console.log("before")
+        await img.write2('out.png');
+        console.log("after")
+        const image = fs.readFileSync('./out.png');
         expect(image).toMatchImageSnapshot();
+        // img.write('out.png', () => {
+        //   try {
+        //     const image = fs.readFileSync('./out.png');
+        //     expect(image).toMatchImageSnapshot();
+        //     done();
+        //   } catch (err) {
+        //     done(err);
+        //   }
+        // })
       }  catch (error) {
-        await page.screenshot({path: `pdf-report-error-${new Date().toLocaleString()}.png`})
+        await page.screenshot({path: `pdf-report-error.png`, fullPage: true})
         throw error;
       }
       })
     })
-    describe('教师教学质量分析报告', () => {
+    describe.skip('教师教学质量分析报告', () => {
       test('报表', async () => {
         let path = '/report/teacher?examid=43257-84&org=2&grade=直升初二';
         let waitFor = (page) => {
@@ -130,7 +203,7 @@ describe(userDesc, () => {
         await driver(path, waitFor);
       })
     })
-    describe('校级分析报告', () => {
+    describe.skip('校级分析报告', () => {
       test('报表', async () => {
         let path = '/report/total?examid=43257-84&org=2&grade=直升初二';
         let waitFor = (page) => {
@@ -164,7 +237,7 @@ describe(userDesc, () => {
         await driver(path, waitFor);
       })
     })
-    describe('班级分析报告', () => {
+    describe.skip('班级分析报告', () => {
       test('报表', async () => {
         let path = '/report/class?examid=43257-84&grade=直升初二&org=2';
         let waitFor = (page) => {
@@ -184,7 +257,7 @@ describe(userDesc, () => {
         await driver(path, waitFor);
       })
     })
-    describe('学生成绩分析', () => {
+    describe.skip('学生成绩分析', () => {
       test('直升初19级4班 => 丁涵', async () => {
         const page = await browser.newPage();
         page.setDefaultTimeout(60 * 1000 * 2);
@@ -231,7 +304,7 @@ describe(userDesc, () => {
         }
       })
     })
-    describe('必备知识、关键能力与学科素养分析报告', () => {
+    describe.skip('必备知识、关键能力与学科素养分析报告', () => {
       test('报表', async () => {
         let path = '/report/knowledge?examid=43257-84&org=2&grade=直升初二';
         let waitFor = (page) => {
@@ -301,7 +374,7 @@ describe(userDesc, () => {
         expect(image).toMatchImageSnapshot();
       })
     })
-    describe("常用综合报表", () => {
+    describe.skip("常用综合报表", () => {
       describe("排行榜", () => {
         // test("查看所有班级", async () => {
         //   const page = await browser.newPage();
