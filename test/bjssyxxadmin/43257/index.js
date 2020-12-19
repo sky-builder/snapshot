@@ -33,7 +33,7 @@ beforeAll(async (done) => {
 let examDesc = `${config.examInfo.name}(${config.examInfo.id})`;
 let userDesc = `${config.userInfo.name}(${config.userInfo.id})`;
 
-const PAGE_TIMEOUT = 60 * 1000 * 2;
+const PAGE_TIMEOUT = 60 * 1000 * 10;
 
 async function driver(path, waitFor) {
     const page = await browser.newPage();
@@ -92,7 +92,7 @@ describe(userDesc, () => {
       // })
       test('PDF 视图', async () => {
         const page = await browser.newPage();
-        page.setDefaultTimeout(60 * 1000 * 3);
+        page.setDefaultTimeout(PAGE_TIMEOUT);
         await page.setCookie(cookie);
         const PDF_PATH = '/report/export/pdf?export=true&report=question&examid=1142516-84&org=0&pindex=4409166';
         const PDF_URL = `${config.host}${PDF_PATH}`
