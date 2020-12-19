@@ -17,7 +17,7 @@ beforeAll(async (done) => {
   browser = await puppeteer.launch(
     {
       // headless: false,
-      args: ['--disable-dev-shm-usage']
+      args: ['--no-sandbox', '--disable-dev-shm-usage']
     }
   );
   let res = await axios.get(loginApi);
@@ -64,7 +64,7 @@ async function driver(path, waitFor) {
 }
 describe(userDesc, () => {
   describe(examDesc, () => {
-    describe('命题质量报表', () => {
+    describe.skip('命题质量报表', () => {
       // test('报表视图', async () => {
       //   const page = await browser.newPage();
       //   page.setDefaultTimeout(60 * 1000 * 2);
@@ -304,7 +304,7 @@ describe(userDesc, () => {
         }
       })
     })
-    describe.skip('必备知识、关键能力与学科素养分析报告', () => {
+    describe('必备知识、关键能力与学科素养分析报告', () => {
       test('报表', async () => {
         let path = '/report/knowledge?examid=43257-84&org=2&grade=直升初二';
         let waitFor = (page) => {
