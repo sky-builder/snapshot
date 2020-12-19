@@ -304,7 +304,7 @@ describe(userDesc, () => {
         }
       })
     })
-    describe('必备知识、关键能力与学科素养分析报告', () => {
+    describe.skip('必备知识、关键能力与学科素养分析报告', () => {
       test('报表', async () => {
         let path = '/report/knowledge?examid=43257-84&org=2&grade=直升初二';
         let waitFor = (page) => {
