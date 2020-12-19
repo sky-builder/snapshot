@@ -169,7 +169,9 @@ describe(userDesc, () => {
         await img.write2('out.png');
         console.log("after")
         const image = fs.readFileSync('./out.png');
+        console.log('3')
         expect(image).toMatchImageSnapshot();
+        console.log('4')
         // img.write('out.png', () => {
         //   try {
         //     const image = fs.readFileSync('./out.png');
