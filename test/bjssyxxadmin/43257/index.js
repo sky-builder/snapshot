@@ -64,7 +64,7 @@ async function driver(path, waitFor) {
 }
 describe(userDesc, () => {
   describe(examDesc, () => {
-    describe.skip('命题质量报表', () => {
+    describe('命题质量报表', () => {
       // test('报表视图', async () => {
       //   const page = await browser.newPage();
       //   page.setDefaultTimeout(60 * 1000 * 2);
@@ -306,22 +306,22 @@ describe(userDesc, () => {
     })
     describe('必备知识、关键能力与学科素养分析报告', () => {
       test('报表', async () => {
-        // let path = '/report/knowledge?examid=43257-84&org=2&grade=直升初二';
-        // let waitFor = (page) => {
-        //   let promise = new Promise(async (resolve, reject) => {
-        //     try {
-        //       const tableLength = 6;
-        //       await page.waitForFunction(`document.querySelectorAll('.el-table').length === ${tableLength}`);
-        //       const canvasLength = 2;
-        //       await page.waitForFunction(`document.querySelectorAll('canvas').length === ${canvasLength}`);
-        //       resolve();
-        //     } catch (e) {
-        //       reject(e);
-        //     }
-        //   })
-        //   return promise;
-        // }
-        // await driver(path, waitFor);
+        let path = '/report/knowledge?examid=43257-84&org=2&grade=直升初二';
+        let waitFor = (page) => {
+          let promise = new Promise(async (resolve, reject) => {
+            try {
+              const tableLength = 6;
+              await page.waitForFunction(`document.querySelectorAll('.el-table').length === ${tableLength}`);
+              const canvasLength = 2;
+              await page.waitForFunction(`document.querySelectorAll('canvas').length === ${canvasLength}`);
+              resolve();
+            } catch (e) {
+              reject(e);
+            }
+          })
+          return promise;
+        }
+        await driver(path, waitFor);
       })
       test('pdf', async () => {
         let path = '/report/knowledge?examid=43257-84&org=2&grade=直升初二';
