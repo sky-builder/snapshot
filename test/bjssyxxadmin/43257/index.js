@@ -135,7 +135,7 @@ describe(userDesc, () => {
           }
           // 大于16 * 1024高度的图片循环截图 放在系统提供的缓存里
           let index=1;
-          let mh = maxScreenshotHeight * 5;
+          let mh = maxScreenshotHeight * 2;
           for ( let ypos = 0; ypos < mh; ypos += maxScreenshotHeight ) {
             const height = Math.min( mh - ypos, maxScreenshotHeight );
             let tmpName = `img-${index}.png`;
