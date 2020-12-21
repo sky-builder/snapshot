@@ -113,7 +113,7 @@ describe(userDesc, () => {
         
         // await page.screenshot({fullPage: true, path: 'full.png'})
         async function f(page) {
-          const bugMaxHeight = 15 * 1024;
+          const bugMaxHeight = 1 * 1024;
           const dpr = page.viewport().deviceScaleFactor || 1;
           const maxScreenshotHeight = Math.floor( bugMaxHeight / dpr );
           const imgArr = [];
@@ -135,8 +135,9 @@ describe(userDesc, () => {
           }
           // 大于16 * 1024高度的图片循环截图 放在系统提供的缓存里
           let index=1;
-          for ( let ypos = 0; ypos < contentSize.height; ypos += maxScreenshotHeight ) {
-            const height = Math.min( contentSize.height - ypos, maxScreenshotHeight );
+          let mh = maxScreenshotHeight * 5;
+          for ( let ypos = 0; ypos < mh; ypos += maxScreenshotHeight ) {
+            const height = Math.min( mh - ypos, maxScreenshotHeight );
             let tmpName = `img-${index}.png`;
             console.log({tmpName})
             index += 1;
