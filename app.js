@@ -1,34 +1,53 @@
-/**
- * 遍历表头，根据业务需求，给某些列添加 fixed 和 width 属性
- * @param {Array} header excel 表头, 格式定义: http://wiki.iyunxiao.com/pages/viewpage.action?pageId=399479176
- */
-function formatHeader(header) {
-  let result = header.map(item => {
-    let isFixed = getIsFixed(item.label);
-    let width = getWidth(item.label);
-    return {
-      isFixed,
-      width,
-      ...item
-    }
+const { spawn } = require('child_process');
+const express = require('express')
+const app = express();
+app.set('view engine', 'pug')
+app.set('views', './views')
+app.get('/', function (req, res) {
+  res.render('index', { title: 'Hey', message: 'Hello there!' })
+})
+let path = require('path')
+let public = path.join(__dirname, 'public')
+app.use(express.static(public))
+let clientList = [];
+function tellAll(clientList, data) {
+ 
+  clientList.forEach(client => {
+    client.write(`event: notice\n`);
+    client.write(`data: ${JSON.stringify({msg: JSON.stringify(data)})}\n\n`);
   })
-  return result;
 }
+app.post('/test', (req, res) => {
+  let ls = spawn('npm.cmd', ['run', 'test-update'])
+  
+  ls.stdout.on('data', (data) => {
+    console.log(`stdout: ${data}`);
+    tellAll(clientList, data)
+  });
 
-/**
- * 判断某列是否固定列
- * @param {Object} obj 
- */
-function getIsFixed(obj) {
-  return true;
-}
+  ls.stderr.on('data', (data) => {
+    console.log(`stderr: ${data}`);
+    tellAll(clientList, data)
+  });
 
-/**
- * 获取某列的宽度
- * @param {header} obj 
- */
-function getWidth(obj) {
-  return 100;
-}
+  ls.on('close', (code) => {
+    console.log(`child process exited with code ${code}`);
+    res.end('thank you')
+    tellAll(clientList, 'thank you')
+  })
+})
 
-module.exports = formatHeader;
+app.get('/connect', (req, res) => {
+  const headers = {
+    'Content-Type': 'text/event-stream',
+    Connection: 'keep-alive',
+    'Cache-Control': 'no-cache'
+  };
+  res.writeHead(200, headers)
+  clientList.push(res);
+
+})
+
+app.listen(3000, () => {
+  console.log('listening');
+})
