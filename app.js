@@ -20,7 +20,27 @@ function tellAll(clientList, eventName, data) {
     client.write(`data: ${JSON.stringify({msg: JSON.stringify(data)})}\n\n`);
   })
 }
-app.post('/test', (req, res) => {
+app.post('/test-test', (req, res) => {
+  let ls = spawn('npm.cmd', ['run', 'test-test'])
+  
+  ls.stdout.on('data', (data) => {
+    console.log(`stdout: ${data}`);
+    tellAll(clientList, 'notice', data)
+  });
+
+  ls.stderr.on('data', (data) => {
+    console.log(`stderr: ${data}`);
+    tellAll(clientList, 'notice', data)
+  });
+
+  ls.on('close', (code) => {
+    console.log(`child process exited with code ${code}`);
+    res.end('thank you')
+    tellAll(clientList, 'end', 'thank you')
+  })
+})
+
+app.post('/test-update', (req, res) => {
   let ls = spawn('npm.cmd', ['run', 'test-update'])
   
   ls.stdout.on('data', (data) => {

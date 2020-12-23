@@ -9,8 +9,25 @@ function updateTest() {
     });
 }
 
+function runTest(env) {
+  let envApiTable = {
+    'test': '/test-test',
+  }
+  let api = envApiTable[env];
+  axios.post(api)
+  .then((res) => {
+    console.log({ res });
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+}
 var term = new Terminal({
   cols: 200,
+  theme: {
+    foreground: '#222',
+    background: '#fdf6e3'
+  }
 });
 
 term.open(document.getElementById("terminal"));
@@ -21,11 +38,12 @@ let isLoading = false;
 const btnUpdateTest = document.getElementById("btn-update-test");
 
 function updateButtonState() {
-  if (isLoading) {
-    btnUpdateTest.classList.add("is-loading");
-  } else {
-    btnUpdateTest.classList.remove("is-loading");
-  }
+  let buttonList = document.querySelectorAll('.test-button')
+  buttonList = Array.from(buttonList)
+  let method = isLoading ? 'add' : 'remove';
+  buttonList.forEach(button => {
+    button.classList[method]("is-loading");
+  })
 }
 event.addEventListener("notice", (e) => {
   if (!isLoading) {

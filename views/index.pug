@@ -7,7 +7,8 @@ html(lang="en")
     link(rel="stylesheet", href="/bulma.min.css")
     title Document
   body
-    button(onclick="updateTest()" class="button" id="btn-update-test") update test
+    button(onclick="updateTest()" class="button test-button" id="btn-update-test") update test
+    button(onclick="runTest('test')" class="button test-button" id="btn-update-test") run test on test
     <div id="terminal"></div>
     <script src="xterm.js"></script>
     script(src="https://cdn.jsdelivr.net/npm/axios@0.21.1/dist/axios.min.js")

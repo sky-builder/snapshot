@@ -288,7 +288,7 @@ describe(userDesc, () => {
         } catch (e) {
           let errorImagePath = `error_student-score.png`;
           await page.screenshot({path: errorImagePath, fullPage: true})
-          console.error(e);
+          throw e;
         }
       })
     })
