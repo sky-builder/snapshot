@@ -8,7 +8,7 @@
     "test-test": "cross-env NODE_ENV=test jest",
     "test-gray": "cross-env NODE_ENV=gray jest",
     "test-prod": "cross-env NODE_ENV=production jest",
-    "test-update": "cross-env NODE_ENV=test jest --updateSnapshot --logHeapUsage --verbose=false"
+    "test-update": "cross-env NODE_ENV=test jest --updateSnapshot --logHeapUsage --verbose=true --silent=false"
   },
   "keywords": [],
   "author": "",
