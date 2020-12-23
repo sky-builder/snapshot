@@ -162,7 +162,7 @@ const reportList = [
   },
   {
     name: '教师教学质量分析报告', 
-    skip: true,
+    skip: false,
     optionList: [
       {
         name: '报表',
@@ -174,7 +174,7 @@ const reportList = [
     ]
   },
   {
-    skip: true,
+    skip: false,
     name: '校级分析报告', 
     optionList: [
       {
@@ -231,9 +231,13 @@ describe(userDesc, () => {
     describe('学生成绩分析', () => {
       test('直升初19级4班 => 丁涵', async () => {
         // throw new Error('yes')
+        console.log('hi')
         const page = await browser.newPage();
+        console.log('hi')
         page.setDefaultTimeout(PAGE_TIMEOUT);
+        console.log('hi')
         await page.setCookie(cookie);
+        console.log('hi')
     
         const REPORT_PATH = '/report/student?examid=43257-84&org=2&grade=直升初二';
         const REPORT_URL = `${config.host}${REPORT_PATH}`
