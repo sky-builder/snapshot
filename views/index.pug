@@ -4,9 +4,10 @@ html(lang="en")
     meta(charset="UTF-8")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     link(rel="stylesheet", href="/xterm.css")
+    link(rel="stylesheet", href="/bulma.min.css")
     title Document
   body
-    button(onclick="updateTest()") updateTest
+    button(onclick="updateTest()" class="button" id="btn-update-test") update test
     <div id="terminal"></div>
     <script src="xterm.js"></script>
     script(src="https://cdn.jsdelivr.net/npm/axios@0.21.1/dist/axios.min.js")
