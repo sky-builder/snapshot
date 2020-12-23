@@ -8,7 +8,7 @@
     "test-test": "cross-env NODE_ENV=test jest",
     "test-gray": "cross-env NODE_ENV=gray jest",
     "test-prod": "cross-env NODE_ENV=production jest",
-    "test-update": "cross-env NODE_ENV=test jest --updateSnapshot --logHeapUsage --json --outputFile=output.json"
+    "test-update": "cross-env NODE_ENV=test jest --updateSnapshot --logHeapUsage --verbose=false"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +21,8 @@
     "axios": "^0.21.0",
     "cross-env": "^7.0.3",
     "express": "^4.17.1",
+    "humanize-duration": "^3.25.0",
+    "jest-html-reporter": "^3.3.0",
     "merge-img": "^2.1.3",
     "nodemon": "^2.0.6",
     "pug": "^3.0.0",

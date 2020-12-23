@@ -5,11 +5,31 @@ html(lang="en")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     link(rel="stylesheet", href="/xterm.css")
     link(rel="stylesheet", href="/bulma.min.css")
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/humanize-duration/3.25.0/humanize-duration.min.js" integrity="sha512-0UnIJivC9iikxy7OKQGyLFRBtayFBWmh+Fdkv0qXcMY7N1Byk0Vi+WX+7MVdXQriiBDprEqZ6Gwcd5NLyPvGjA==" crossorigin="anonymous"></script>
+    link(rel="stylesheet", href="/index.css")
     title Document
   body
-    button(onclick="updateTest()" class="button test-button" id="btn-update-test") update test
-    button(onclick="runTest('test')" class="button test-button" id="btn-update-test") run test on test
-    <div id="terminal"></div>
+    div.test
+      ul.test__results
+        each item in results
+          -
+            let duration = item.endTime - item.startTime;
+            duration = humanizeDuration(duration);
+          //- TODO: why testResults is an Array ?
+          li(class='test__result' class=item.status === 'passed' ? 'test__result--passed' : 'test__result--failed')
+            .test__status= item.status
+            .test__finished= '开始时间: ' + new Date(item.startTime).toLocaleString()
+            .test__finished= '结束时间: ' + new Date(item.endTime).toLocaleString()
+            .test__duration= '持续时间: ' + duration
+            a(href="/test-report.html") 查看运行报告
+            br
+            a(href="/images") 查看图片
+      div.test__details
+        button(onclick="updateTest()" class="button test-button" id="btn-update-test") update test
+        button(onclick="runTest('test')" class="button test-button" id="btn-update-test") run test on test
+        div
+          p 控制台
+          <div class="test__log" id="terminal"></div>
     <script src="xterm.js"></script>
     script(src="https://cdn.jsdelivr.net/npm/axios@0.21.1/dist/axios.min.js")
     script(src="index.js")

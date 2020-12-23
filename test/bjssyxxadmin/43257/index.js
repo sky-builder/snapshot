@@ -230,6 +230,7 @@ describe(userDesc, () => {
     }
     describe('学生成绩分析', () => {
       test('直升初19级4班 => 丁涵', async () => {
+        // throw new Error('yes')
         const page = await browser.newPage();
         page.setDefaultTimeout(PAGE_TIMEOUT);
         await page.setCookie(cookie);

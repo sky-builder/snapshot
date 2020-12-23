@@ -1,6 +1,6 @@
 function updateTest() {
   axios
-    .post("/test")
+    .post("/test-update")
     .then((res) => {
       console.log({ res });
     })

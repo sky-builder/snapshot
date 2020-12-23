@@ -1,0 +1,34 @@
+html, body {
+  height: 100vh;
+}
+body {
+  margin: 1rem;
+}
+#terminal {
+  overflow: auto;
+}
+.test__details {
+  overflow: auto;
+}
+
+.test {
+  display: flex;
+  flex-direction: row;;
+}
+
+.test__result {
+  height: auto;
+  padding: .8em .5em .8em 1.5em;
+  margin-bottom: .46rem;
+  background-color: #fff;
+  border-radius: 0;
+  overflow: hidden;
+  width: 22rem;
+}
+
+.test__result--passed {
+  background: linear-gradient(to right,#39aa56 0,#39aa56 8px,#fff 8px,#fff 100%) no-repeat;
+}
+.test__result--failed {
+  background: linear-gradient(to right,#db4545 0,#db4545 8px,#fff 8px,#fff 100%) no-repeat;
+}
