@@ -29,6 +29,7 @@ let lastResult = {
 }
 app.get('/', function (req, res) {
   let testResults = db.get('TestResults')
+  .orderBy('endTime', 'desc')
   .take(5)
   .value()
   res.render('index', { humanizeDuration, currentResult: testResults && testResults.length ? testResults[0] : null, results: testResults})
@@ -37,8 +38,10 @@ app.get('/', function (req, res) {
 
 let path = require('path');
 let public = path.join(__dirname, 'public')
+let reports = path.join(__dirname, 'reports')
 let test = path.join(__dirname, 'images')
 app.use(express.static(public))
+app.use('/reports', express.static(reports))
 app.use('/images', express.static(test), serveIndex(test, {'icons': true}))
 let clientList = [];
 function tellAll(clientList, eventName, data) {
@@ -93,15 +96,20 @@ app.post('/test-update', async (req, res) => {
     res.end('thank you')
     let endTime = new Date().getTime();
     lastResult = {
+      cmd: 'update',
       endTime,
       startTime,
       status: isOk ? 'passed' : 'failed',
       id: id,
       imagesPath: `/images/${id}/`,
+      htmlReport: `/reports/${id}.html`
     } 
     const srcDir = 'test';
     const destDir = 'images/' + id;
     await fse.copy(srcDir, destDir)
+    let srcHtml = 'public/test-report.html';
+    let destHtml = `reports/${id}.html`
+    await fse.copy(srcHtml, destHtml)
     id += 1;
     db.get('TestResults').push(lastResult)
     .write();

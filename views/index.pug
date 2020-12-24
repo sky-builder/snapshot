@@ -17,11 +17,13 @@ html(lang="en")
             duration = humanizeDuration(duration);
           //- TODO: why testResults is an Array ?
           li(class='test__result' class=item.status === 'passed' ? 'test__result--passed' : 'test__result--failed')
+            .test__id= '#' + item.id
             .test__status= item.status
+            .test__cmd= '命令: ' + item.cmd
             .test__finished= '开始时间: ' + new Date(item.startTime).toLocaleString()
             .test__finished= '结束时间: ' + new Date(item.endTime).toLocaleString()
             .test__duration= '持续时间: ' + duration
-            a(href="/test-report.html") 查看运行报告
+            a(href=item.htmlReport) 查看运行报告
             br
             a(href=item.imagesPath) 查看图片
       div.test__details

@@ -20,6 +20,31 @@
       "status": "failed",
       "id": 3,
       "imagesPath": "/images/3/"
+    },
+    {
+      "endTime": 1608800630262,
+      "startTime": 1608800624866,
+      "status": "failed",
+      "id": 4,
+      "imagesPath": "/images/4/",
+      "htmlReport": "/reports/4.html"
+    },
+    {
+      "endTime": 1608800945455,
+      "startTime": 1608800939674,
+      "status": "failed",
+      "id": 5,
+      "imagesPath": "/images/5/",
+      "htmlReport": "/reports/5"
+    },
+    {
+      "cmd": "update",
+      "endTime": 1608800958880,
+      "startTime": 1608800951712,
+      "status": "failed",
+      "id": 6,
+      "imagesPath": "/images/6/",
+      "htmlReport": "/reports/6"
     }
   ]
 }
