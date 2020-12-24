@@ -2,6 +2,23 @@ const { spawn } = require('child_process');
 const express = require('express')
 const app = express();
 const humanizeDuration = require('humanize-duration')
+const fse = require('fs-extra');
+const FileSync = require('lowdb/adapters/FileSync')
+const low = require('lowdb')
+const adapter = new FileSync('db.json')
+const db = low(adapter)
+db.defaults({ TestResults: []})
+  .write()
+let tests = db.get('TestResults')
+        .orderBy('id', 'desc')
+        .take(1)
+        .value()
+
+let id = 1;
+if (tests && tests.length) {
+  id = tests[0].id + 1;
+}
+
 app.set('view engine', 'pug')
 app.set('views', './views')
 var serveIndex = require('serve-index')
@@ -11,14 +28,16 @@ let lastResult = {
   status: '',
 }
 app.get('/', function (req, res) {
-  console.log(lastResult)
-  res.render('index', { humanizeDuration, currentResult: lastResult, results: [lastResult]})
+  let testResults = db.get('TestResults')
+  .take(5)
+  .value()
+  res.render('index', { humanizeDuration, currentResult: testResults && testResults.length ? testResults[0] : null, results: testResults})
   
 })
 
-let path = require('path')
+let path = require('path');
 let public = path.join(__dirname, 'public')
-let test = path.join(__dirname, 'test')
+let test = path.join(__dirname, 'images')
 app.use(express.static(public))
 app.use('/images', express.static(test), serveIndex(test, {'icons': true}))
 let clientList = [];
@@ -52,7 +71,7 @@ app.post('/test-test', (req, res) => {
   })
 })
 
-app.post('/test-update', (req, res) => {
+app.post('/test-update', async (req, res) => {
   let isOk = true;
   let startTime = new Date().getTime();
   let ls = spawn('npm.cmd', ['run', 'test-update'])
@@ -68,16 +87,24 @@ app.post('/test-update', (req, res) => {
     if (data.toString().includes('FAIL')) isOk = false;
     tellAll(clientList, 'notice', data)
   });
-
-  ls.on('close', (code) => {
+  
+  ls.on('close', async (code) => {
     console.log(`child process exited with code ${code}`);
     res.end('thank you')
     let endTime = new Date().getTime();
     lastResult = {
       endTime,
       startTime,
-      status: isOk ? 'passed' : 'failed'
+      status: isOk ? 'passed' : 'failed',
+      id: id,
+      imagesPath: `/images/${id}/`,
     } 
+    const srcDir = 'test';
+    const destDir = 'images/' + id;
+    await fse.copy(srcDir, destDir)
+    id += 1;
+    db.get('TestResults').push(lastResult)
+    .write();
     tellAll(clientList, 'end', lastResult)
   })
 })

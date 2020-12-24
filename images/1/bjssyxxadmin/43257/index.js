@@ -58,7 +58,6 @@ async function waitForFns(page, fns) {
   await Promise.all(promiseArr);
 }
 async function testRunner(report, option) {
-  throw new Error('hi')
   const {
     path,
     name,

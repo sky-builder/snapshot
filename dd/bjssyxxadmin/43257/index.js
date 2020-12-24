@@ -58,7 +58,6 @@ async function waitForFns(page, fns) {
   await Promise.all(promiseArr);
 }
 async function testRunner(report, option) {
-  throw new Error('hi')
   const {
     path,
     name,
@@ -197,7 +196,7 @@ const reportList = [
     ]
   },
   {
-    skip: false,
+    skip: true,
     name: '班级分析报告', 
     optionList: [
       {
@@ -298,7 +297,7 @@ describe(userDesc, () => {
         }
       })
     })
-    describe.skip('必备知识、关键能力与学科素养分析报告', () => {
+    describe('必备知识、关键能力与学科素养分析报告', () => {
       test('报表', async () => {
         const name = '必备知识、关键能力与学科素养分析报告'
         const option = {

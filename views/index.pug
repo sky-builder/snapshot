@@ -23,7 +23,7 @@ html(lang="en")
             .test__duration= '持续时间: ' + duration
             a(href="/test-report.html") 查看运行报告
             br
-            a(href="/images") 查看图片
+            a(href=item.imagesPath) 查看图片
       div.test__details
         button(onclick="updateTest()" class="button test-button" id="btn-update-test") update test
         button(onclick="runTest('test')" class="button test-button" id="btn-update-test") run test on test

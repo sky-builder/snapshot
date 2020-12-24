@@ -1,0 +1,25 @@
+{
+  "TestResults": [
+    {
+      "endTime": 1608799715770,
+      "startTime": 1608799705165,
+      "status": "passed",
+      "id": 1,
+      "imagesPath": "/images/1/"
+    },
+    {
+      "endTime": 1608800223507,
+      "startTime": 1608800218782,
+      "status": "failed",
+      "id": 2,
+      "imagesPath": "/images/2/"
+    },
+    {
+      "endTime": 1608800444098,
+      "startTime": 1608800439233,
+      "status": "failed",
+      "id": 3,
+      "imagesPath": "/images/3/"
+    }
+  ]
+}
