@@ -69,6 +69,74 @@ event.addEventListener("notice", (e) => {
   }
 });
 event.addEventListener("end", (e) => {
+  let data = e.data;
+  let json = JSON.parse(data);
+  let msg = json.msg;
+  let msgJson = JSON.parse(msg);
+  let li = document.querySelector(`[data-id='${msgJson.id}']`);
+  let status = li.querySelector('.test__status')
+  status.innerHTML = msgJson.status;
+
+  let cmd = document.createElement('div');
+  cmd.innerHTML = `命令: ${msgJson.cmd}`;
+
+  let started = document.createElement('div')
+  started.innerHTML = `'开始时间: ' + ${new Date(msgJson.startTime).toLocaleString()}`
+
+  let finished = document.createElement('div');
+  finished.innerHTML = `'结束时间: ' + ${new Date(msgJson.endTime).toLocaleString()}`
+
+  let duration = msgJson.endTime - msgJson.startTime;
+  duration = humanizeDuration(duration);
+
+  let d = document.createElement('div')
+  d.innerHTML = `持续时间: ${duration}`;
+
+  let htmlReport = document.createElement('a');
+  htmlReport.href = msgJson.htmlReport;
+  htmlReport.innerHTML = '查看运行报告'
+
+  let checkImages = document.createElement('a');
+  checkImages.href= msgJson.imagesPath;
+  checkImages.innerHTML = '查看图片'
+  if (msgJson.status === 'passed') {
+    li.classList.add('test__result--passed')
+  } else {
+    li.classList.add('test__result--failed')
+  }
+
+  li.appendChild(cmd)
+  li.appendChild(started)
+  li.appendChild(finished)
+  li.appendChild(d)
+  li.appendChild(htmlReport)
+  li.appendChild(document.createElement('br'))
+  li.appendChild(checkImages)
+
   isLoading = false;
+  updateButtonState();
+});
+
+event.addEventListener("new", (e) => {
+  let data = e.data;
+  let json = JSON.parse(data);
+  let msg = json.msg;
+  let msgJson = JSON.parse(msg);
+  isLoading = false;
+
+  let li = document.createElement('li')
+  li.setAttribute('data-id', msgJson.id)
+  li.classList.add('test__result')
+  let id = document.createElement('div')
+  id.innerHTML = '#' + msgJson.id;
+  let status = document.createElement('div');
+  status.classList.add('test__status')
+  status.innerHTML = msgJson.status;
+  li.appendChild(id);
+  li.appendChild(status);
+  console.log(li)
+  let ul = document.querySelector('.test__results');
+  ul.insertBefore(li, ul.firstElementChild)
+
   updateButtonState();
 });

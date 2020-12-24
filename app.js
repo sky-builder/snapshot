@@ -76,8 +76,17 @@ app.post('/test-test', (req, res) => {
 
 app.post('/test-update', async (req, res) => {
   let isOk = true;
-  let startTime = new Date().getTime();
   let ls = spawn('npm.cmd', ['run', 'test-update'])
+  // TODO: find has running and reject if running = true
+  let t = {
+    id: id,
+    status: 'running',
+    startTime: new Date().getTime(),
+  }
+  tellAll(clientList, 'new', t)
+  db.get('TestResults')
+  .push(t)
+  .write();
   
   ls.stdout.on('data', (data) => {
     console.log(`stdout: ${data}`);
@@ -98,22 +107,22 @@ app.post('/test-update', async (req, res) => {
     lastResult = {
       cmd: 'update',
       endTime,
-      startTime,
       status: isOk ? 'passed' : 'failed',
-      id: id,
       imagesPath: `/images/${id}/`,
       htmlReport: `/reports/${id}.html`
     } 
+    t = Object.assign({}, t, lastResult);
     const srcDir = 'test';
     const destDir = 'images/' + id;
     await fse.copy(srcDir, destDir)
     let srcHtml = 'public/test-report.html';
     let destHtml = `reports/${id}.html`
     await fse.copy(srcHtml, destHtml)
-    id += 1;
-    db.get('TestResults').push(lastResult)
+    db.get('TestResults').find({id: id})
+    .assign(t)
     .write();
-    tellAll(clientList, 'end', lastResult)
+    id += 1;
+    tellAll(clientList, 'end', t)
   })
 })
 

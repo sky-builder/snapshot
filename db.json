@@ -45,6 +45,87 @@
       "id": 6,
       "imagesPath": "/images/6/",
       "htmlReport": "/reports/6"
+    },
+    {
+      "id": 7,
+      "status": "failed",
+      "startTime": 1608802129475,
+      "cmd": "update",
+      "endTime": 1608802135272,
+      "imagesPath": "/images/7/",
+      "htmlReport": "/reports/7.html"
+    },
+    {
+      "id": 8,
+      "status": "failed",
+      "startTime": 1608802484072,
+      "cmd": "update",
+      "endTime": 1608802488338,
+      "imagesPath": "/images/8/",
+      "htmlReport": "/reports/8.html"
+    },
+    {
+      "id": 9,
+      "status": "failed",
+      "startTime": 1608802504517,
+      "cmd": "update",
+      "endTime": 1608802509446,
+      "imagesPath": "/images/9/",
+      "htmlReport": "/reports/9.html"
+    },
+    {
+      "id": 10,
+      "status": "failed",
+      "startTime": 1608802534935,
+      "cmd": "update",
+      "endTime": 1608802539749,
+      "imagesPath": "/images/10/",
+      "htmlReport": "/reports/10.html"
+    },
+    {
+      "id": 11,
+      "status": "failed",
+      "startTime": 1608802584432,
+      "cmd": "update",
+      "endTime": 1608802588747,
+      "imagesPath": "/images/11/",
+      "htmlReport": "/reports/11.html"
+    },
+    {
+      "id": 12,
+      "status": "failed",
+      "startTime": 1608802630734,
+      "cmd": "update",
+      "endTime": 1608802635094,
+      "imagesPath": "/images/12/",
+      "htmlReport": "/reports/12.html"
+    },
+    {
+      "id": 13,
+      "status": "failed",
+      "startTime": 1608802651730,
+      "cmd": "update",
+      "endTime": 1608802655872,
+      "imagesPath": "/images/13/",
+      "htmlReport": "/reports/13.html"
+    },
+    {
+      "id": 14,
+      "status": "failed",
+      "startTime": 1608802716398,
+      "cmd": "update",
+      "endTime": 1608802720588,
+      "imagesPath": "/images/14/",
+      "htmlReport": "/reports/14.html"
+    },
+    {
+      "id": 15,
+      "status": "failed",
+      "startTime": 1608802751039,
+      "cmd": "update",
+      "endTime": 1608802755310,
+      "imagesPath": "/images/15/",
+      "htmlReport": "/reports/15.html"
     }
   ]
 }
