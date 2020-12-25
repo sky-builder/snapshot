@@ -13,7 +13,7 @@
               { "name": "报表", "skip": false, "isCustom": true },
               { "name": "pdf", "skip": false, "isCustom": true }
             ],
-            "isSkip": false
+            "isSkip": true
           },
           {
             "name": "命题质量报表",
@@ -82,9 +82,9 @@
                 ]
               }
             ],
-            "isSkip": true
+            "isSkip": false
           },
-          { "name": "学生成绩分析", "isSkip": true }
+          { "name": "学生成绩分析", "isSkip": false, "optionList": [] }
         ]
       }
     ]
