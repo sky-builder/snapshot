@@ -180,6 +180,25 @@
       "endTime": 1608887596079,
       "imagesPath": "/images/21/",
       "htmlReport": "/reports/21.html"
+    },
+    {
+      "id": 22,
+      "status": "passed",
+      "startTime": 1608891074924,
+      "cmd": "update",
+      "endTime": 1608891105022,
+      "imagesPath": "/images/22/",
+      "htmlReport": "/reports/22.html"
+    },
+    {
+      "id": 23,
+      "status": "running",
+      "startTime": 1608891175982
+    },
+    {
+      "id": 23,
+      "status": "running",
+      "startTime": 1608891295989
     }
   ]
 }
