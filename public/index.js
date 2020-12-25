@@ -10,11 +10,16 @@ async function updateTest() {
     });
 }
 
-function runTest(env) {
+function runTest() {
+  let select = document.querySelector('select')
+  let value = select.value;
   let envApiTable = {
     'test': '/test-test',
+    'update': '/test-update',
+    'gray': '/test-gray',
+    'release': '/test-release'
   }
-  let api = envApiTable[env];
+  let api = envApiTable[value];
   axios.post(api)
   .then((res) => {
     console.log({ res });
@@ -24,7 +29,7 @@ function runTest(env) {
   });
 }
 var term = new Terminal({
-  cols: 200,
+  cols: 80,
   theme: {
     foreground: '#222',
     background: '#fdf6e3'
@@ -136,7 +141,7 @@ event.addEventListener("new", (e) => {
   li.appendChild(id);
   li.appendChild(status);
   console.log(li)
-  let ul = document.querySelector('.test__results');
+  let ul = document.querySelector('.test__result-list');
   ul.insertBefore(li, ul.firstElementChild)
 
   updateButtonState();

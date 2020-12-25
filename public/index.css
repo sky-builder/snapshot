@@ -9,11 +9,18 @@ body {
 }
 .test__details {
   overflow: auto;
+  border: 1px solid #eee;
+  padding: 1rem;
+  margin-left: 1rem;
 }
 
 .test {
   display: flex;
   flex-direction: row;;
+}
+.test__results {
+  border: 1px solid #eee;
+  padding: 1rem;
 }
 
 .test__result {
@@ -25,6 +32,8 @@ body {
   overflow: hidden;
   width: 22rem;
 }
+.test__result + .test__result {
+}
 
 .test__result--passed {
   background: linear-gradient(to right,#39aa56 0,#39aa56 8px,#fff 8px,#fff 100%) no-repeat;
@@ -34,10 +43,21 @@ body {
 }
 
 .test__details ul ul {
-  margin-left: 6rem;
+  margin-left: 2rem;
 }
 .test__details ul li::before {
   content: '○';
   padding-right: 2px;
   font-size: 0.6rem;
+}
+.flex1 {
+  flex: 1;
+}
+.action-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.test-button {
+  width: 10rem;
 }
