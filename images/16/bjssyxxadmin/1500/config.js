@@ -10,5 +10,4 @@ module.exports = {
   host: globalConfig.host,
   examInfo: {
   },
-  reportList: []
 };

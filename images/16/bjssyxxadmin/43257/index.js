@@ -6,8 +6,6 @@ const fs =require('fs')
 const mg = require('merge-img')
 const util = require("util");
 const path = require('path');
-const reportList = require('./report-list.json');
-const { response } = require("express");
 
 
 
@@ -60,6 +58,7 @@ async function waitForFns(page, fns) {
   await Promise.all(promiseArr);
 }
 async function testRunner(report, option) {
+  throw new Error('hi')
   const {
     path,
     name,
@@ -141,20 +140,82 @@ async function takeFullPageScreenShot(page, from) {
   return image;
 }
 
-function customD(name, cb) {
-  let item = reportList.find(item => item.name === name);
-  if (item.isSkip) {
-    return describe.skip(name, cb)
-  } else {
-    return describe(name, cb);
-  }
-}
-
+const reportList = [
+  {
+    name: '命题质量报表',
+    skip: true,
+    optionList: [
+      {
+        name: '报表',
+        path: '/report/question?examid=1142516-84&grade=直升高一&org=0',
+        waitArr: [
+          `document.querySelectorAll('canvas').length === 10`
+        ],
+      },
+      {
+        name: 'pdf',
+        path: '/report/export/pdf?export=true&report=question&examid=1142516-84&org=0&pindex=4409166',
+        waitArr: [
+          `document.querySelectorAll('.index-tree').length === 1`,
+          `document.querySelector(".el-loading-mask.is-fullscreen").style.display === "none"`
+      ]}
+    ]
+  },
+  {
+    name: '教师教学质量分析报告', 
+    skip: true,
+    optionList: [
+      {
+        name: '报表',
+        path :'/report/teacher?examid=43257-84&org=2&grade=直升初二',
+        waitArr: [
+          `document.querySelectorAll('.el-table__row').length > 0`
+        ]
+      }
+    ]
+  },
+  {
+    skip: true,
+    name: '校级分析报告', 
+    optionList: [
+      {
+        name: '报表',
+        path :'/report/total?examid=43257-84&org=2&grade=直升初二',
+        waitArr: [
+          `document.querySelectorAll('canvas').length === 6`
+        ]
+      },
+      {
+        name: 'pdf',
+        path :'/report/export?export=true&report=total&examid=43257-84&org=2',
+        waitArr: [
+          `document.querySelectorAll('canvas').length === 7`,
+          `document.querySelector(".el-loading-mask.is-fullscreen").style.display === "none"`
+        ]
+      
+      }
+    ]
+  },
+  {
+    skip: false,
+    name: '班级分析报告', 
+    optionList: [
+      {
+        name: '报表',
+        path :'/report/class?examid=43257-84&grade=直升初二&org=2',
+        waitArr: [
+          `document.querySelectorAll('.el-table').length === 4`,
+          `document.querySelectorAll('canvas').length === 2`
+        ]
+      },
+    ]
+  },
+]
 describe(userDesc, () => {
   describe(examDesc, () => {
     for(let i = 0; i < reportList.length; i += 1) {
       let report = reportList[i];
-      if (report.isSkip) continue;
+      if (report.skip) continue;
       let {
         name,
         optionList
@@ -168,7 +229,7 @@ describe(userDesc, () => {
         }
       })
     }
-    customD('学生成绩分析', () => {
+    describe.skip('学生成绩分析', () => {
       test('直升初19级4班 => 丁涵', async () => {
         // throw new Error('yes')
         console.log('hi')
@@ -184,6 +245,7 @@ describe(userDesc, () => {
         await page.goto(REPORT_URL, {
           waitUntil: "networkidle0"
         });
+
         try {
           await page.waitForFunction(`document.querySelectorAll('.el-select').length === 2`)
           const dropDownList = await page.$$('.el-select');
@@ -221,7 +283,7 @@ describe(userDesc, () => {
           await target.click();
           console.log(32)
           // wait for render complete
-          await page.waitForFunction(`document.querySelectorAll('.el-table').length === 2`)
+          await page.waitForFunction(`document.querySelectorAll('.el-table').length === 3`)
           console.log(33)
           await page.waitForFunction(`document.querySelectorAll('canvas').length === 1`)
           console.log(34)
@@ -236,7 +298,7 @@ describe(userDesc, () => {
         }
       })
     })
-    customD('必备知识、关键能力与学科素养分析报告', () => {
+    describe.skip('必备知识、关键能力与学科素养分析报告', () => {
       test('报表', async () => {
         const name = '必备知识、关键能力与学科素养分析报告'
         const option = {

@@ -7,6 +7,7 @@ const FileSync = require('lowdb/adapters/FileSync')
 const low = require('lowdb')
 const adapter = new FileSync('db.json')
 const db = low(adapter)
+const bodyParser = require('body-parser');
 db.defaults({ TestResults: []})
   .write()
 let tests = db.get('TestResults')
@@ -19,6 +20,8 @@ if (tests && tests.length) {
   id = tests[0].id + 1;
 }
 
+app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.json())
 app.set('view engine', 'pug')
 app.set('views', './views')
 var serveIndex = require('serve-index')
@@ -32,7 +35,8 @@ app.get('/', function (req, res) {
   .orderBy('endTime', 'desc')
   .take(5)
   .value()
-  res.render('index', { humanizeDuration, currentResult: testResults && testResults.length ? testResults[0] : null, results: testResults})
+  let testCases = require('./sync.json')
+  res.render('index', { humanizeDuration, currentResult: testResults && testResults.length ? testResults[0] : null, results: testResults, testCases})
   
 })
 
@@ -73,9 +77,35 @@ app.post('/test-test', (req, res) => {
     tellAll(clientList, 'end', 'thank you')
   })
 })
-
+app.post('/sync', async(req, res) => {
+  let cases = req.body.cases;
+  console.log(req.body);
+  console.log({cases})
+  if (cases) {
+    cases.forEach(c => {
+      let userId = c.userId;
+      c.examList.forEach(e => {
+        let examId = e.examId;
+        let p = path.join(__dirname, 'test', userId, examId, 'report-list.json');
+        let j = fse.readFileSync(p);
+        j = j.toString();
+        j = JSON.parse(j);
+        console.log({j})
+        console.log({e})
+        e.reportList.forEach(re => {
+          let match = j.find(item => item.name === re.name);
+          console.log({match})
+          match.isSkip = re.isSkip;
+        })
+        fse.writeFileSync(path.join(__dirname, 'test', userId, examId, 'report-list.json'), JSON.stringify(j));
+      })
+    })
+  }
+  res.end('hi')
+})
 app.post('/test-update', async (req, res) => {
   let isOk = true;
+ 
   let ls = spawn('npm.cmd', ['run', 'test-update'])
   // TODO: find has running and reject if running = true
   let t = {

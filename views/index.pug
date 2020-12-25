@@ -27,8 +27,22 @@ html(lang="en")
             br
             a(href=item.imagesPath) 查看图片
       div.test__details
+        button(onclick="parseCases()") pas
         button(onclick="updateTest()" class="button test-button" id="btn-update-test") update test
         button(onclick="runTest('test')" class="button test-button" id="btn-update-test") run test on test
+        div
+          div 测试用例
+          ul
+            each item in testCases
+              li(class="test__user-id" data-id=item.userId)= item.userId
+                ul
+                  each e in item.examList
+                    li(class='test__exam-id' data-id=e.examId)= e.examId
+                      ul
+                        each r in e.reportList
+                          li(class='test__report-name' data-id=r.name)
+                            label(for=`${item.userId}-${e.examId}-${r.name}`)= r.name
+                            input(type="checkbox" id=`${item.userId}-${e.examId}-${r.name}` checked)
         div
           p 控制台
           <div class="test__log" id="terminal"></div>

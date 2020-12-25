@@ -1,4 +1,5 @@
-function updateTest() {
+async function updateTest() {
+  await parseCases();
   axios
     .post("/test-update")
     .then((res) => {
@@ -140,3 +141,46 @@ event.addEventListener("new", (e) => {
 
   updateButtonState();
 });
+
+async function parseCases() {
+  return new Promise((resolve, reject) => {
+
+    let users = document.querySelectorAll('.test__user-id');
+    
+    users = Array.from(users);
+    let result = [];
+    users.forEach(u => {
+      let o = {};
+      o.userId = u.getAttribute('data-id');
+      o.examList = [];
+      let exams = u.querySelectorAll('.test__exam-id');
+      exams.forEach(e => {
+        let oo = {};
+        oo.reportList = [];
+        oo.examId = e.getAttribute('data-id');
+        let reports = e.querySelectorAll('.test__report-name')
+        reports = Array.from(reports);
+        reports.forEach(re => {
+          let ooo = {};
+          ooo.name = re.getAttribute('data-id');
+          console.log(re.querySelector('input'))
+          let input = re.querySelector('input').checked
+          ooo.isSkip = !input;
+          oo.reportList.push(ooo);
+        })
+        o.examList.push(oo);
+      })
+      result.push(o);
+    })
+    console.log(result);
+    axios.post('/sync', {cases: result})
+    .then(res => {
+      console.log({res})
+      resolve();
+    })
+    .catch(err => {
+      console.error(err)
+      reject(err)
+    })
+  })
+}

@@ -6,7 +6,6 @@ const config = Object.assign(parentConfig, {
     pwd: '',
     name: "北京市十一学校超级管理员",
   },
-
 })
 
 module.exports = config;

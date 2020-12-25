@@ -126,6 +126,33 @@
       "endTime": 1608802755310,
       "imagesPath": "/images/15/",
       "htmlReport": "/reports/15.html"
+    },
+    {
+      "id": 16,
+      "status": "failed",
+      "startTime": 1608804268253,
+      "cmd": "update",
+      "endTime": 1608804294266,
+      "imagesPath": "/images/16/",
+      "htmlReport": "/reports/16.html"
+    },
+    {
+      "id": 17,
+      "status": "passed",
+      "startTime": 1608879166230,
+      "cmd": "update",
+      "endTime": 1608879181141,
+      "imagesPath": "/images/17/",
+      "htmlReport": "/reports/17.html"
+    },
+    {
+      "id": 18,
+      "status": "passed",
+      "startTime": 1608879197625,
+      "cmd": "update",
+      "endTime": 1608879228398,
+      "imagesPath": "/images/18/",
+      "htmlReport": "/reports/18.html"
     }
   ]
 }

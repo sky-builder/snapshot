@@ -32,3 +32,12 @@ body {
 .test__result--failed {
   background: linear-gradient(to right,#db4545 0,#db4545 8px,#fff 8px,#fff 100%) no-repeat;
 }
+
+.test__details ul ul {
+  margin-left: 6rem;
+}
+.test__details ul li::before {
+  content: '○';
+  padding-right: 2px;
+  font-size: 0.6rem;
+}
