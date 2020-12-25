@@ -1,9 +1,22 @@
-html, body {
-  height: 100vh;
-}
 body {
   margin: 1rem;
+  height: 100vh;
 }
+.action-bar {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1rem;
+}
+.test__cases
+ {
+  padding-bottom: 1rem;
+  padding-top: 1rem;
+  border-bottom: 1px solid #eee;
+}
+.test__console {
+  padding-top: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
 #terminal {
   overflow: auto;
 }
@@ -32,7 +45,9 @@ body {
   overflow: hidden;
   width: 22rem;
 }
-.test__result + .test__result {
+.test__result:hover {
+  transition: box-shadow 0.2s;
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.5);
 }
 
 .test__result--passed {

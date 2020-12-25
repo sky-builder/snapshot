@@ -5,14 +5,15 @@ html(lang="en")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     link(rel="stylesheet", href="/xterm.css")
     link(rel="stylesheet", href="/bulma.min.css")
+    <script src="xterm.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/humanize-duration/3.25.0/humanize-duration.min.js" integrity="sha512-0UnIJivC9iikxy7OKQGyLFRBtayFBWmh+Fdkv0qXcMY7N1Byk0Vi+WX+7MVdXQriiBDprEqZ6Gwcd5NLyPvGjA==" crossorigin="anonymous"></script>
+    script(src="https://cdn.jsdelivr.net/npm/axios@0.21.1/dist/axios.min.js")
     link(rel="stylesheet", href="/index.css")
-    title Document
+    title 分析自动化截图测试平台
   body
     div.test
       div.test__results
-        h1 运行记录
-        br
+        h5(class="title is-5") 运行记录
         ul.test__result-list
           each item in results
             -
@@ -40,25 +41,23 @@ html(lang="en")
               option(value="release") 生产环境和生产环境对比
           span  &nbsp;&nbsp;&nbsp;&nbsp;
           button(onclick="runTest()" class="button test-button" id="btn-update-test") 运行
-        br
-        div
-          div 测试用例
+        div.test__cases
+          h5(class="title is-5") 测试用例
+          h6(class="subtitle is-6") 目前支持的用例, 以 "账号id-考试id-报表" 三级格式进行组织, 通过勾选/取消勾选来确定测试范围
           ul
             each item in testCases
-              li(class="test__user-id" data-id=item.userId)= '账号:' + item.userId
+              li(class="test__user-id" data-id=item.userId)= item.userId
                 ul
                   each e in item.examList
-                    li(class='test__exam-id' data-id=e.examId)= '考试:' + e.examId
+                    li(class='test__exam-id' data-id=e.examId)= e.examId
                       ul
                         each r in e.reportList  
                           li(class='test__report-name' data-id=r.name)
                             label(for=`${item.userId}-${e.examId}-${r.name}`)= r.name
                             span &nbsp;
                             input(type="checkbox" id=`${item.userId}-${e.examId}-${r.name}` checked)
-        br
-        div
-          p 控制台
+        div.test__console
+          h5(class="title is-5") 控制台
+          h6(class="subtitle is-6") 实时显示服务器运行自动化测试时产生的日志
           <div class="test__log" id="terminal"></div>
-    <script src="xterm.js"></script>
-    script(src="https://cdn.jsdelivr.net/npm/axios@0.21.1/dist/axios.min.js")
     script(src="index.js")
