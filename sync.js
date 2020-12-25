@@ -1,3 +1,6 @@
+/**
+ * 将 test 文件夹里的测试用例转成 JSON 格式, 用于前端展示和选择测试范围
+ */
 const fs = require('fs')
 const path = require('path')
 
@@ -19,8 +22,6 @@ for(let i = 0; i < users.length; i += 1) {
     r.examId = exams[j];
     let f = path.join(root, users[i], exams[j], 'report-list.json');
     let config = require(f)
-    // config = config.toString();
-    // config = JSON.parse(config);
     r.reportList = config;
     k.examList.push(r)
   }
