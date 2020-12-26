@@ -138,6 +138,7 @@ if (runningCase) {
   res.end('there is running case, please wait.')
   return;
 }
+// TODO: switch to npm on linux
 let ls = spawn('npm.cmd', ['run', cmd])
 
 let isPassed = true;

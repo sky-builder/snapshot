@@ -1,32 +1,23 @@
-const { toMatchImageSnapshot } = require("jest-image-snapshot");
-const puppeteer = require("puppeteer");
-const config = require("./config");
-const axios = require('axios')
-const fs =require('fs')
-const mg = require('merge-img')
+const fs = require('fs')
 const util = require("util");
 const path = require('path');
+const axios = require('axios')
+const mg = require('merge-img')
+const puppeteer = require("puppeteer");
+const { toMatchImageSnapshot } = require("jest-image-snapshot");
+
+const config = require("./config");
 const reportList = require('./report-list.json');
-const { response } = require("express");
 
-
-
-function cleanDir(dir) {
-  let files = fs.readdirSync(dir);
-  for(let i = 0; i < files.length; i += 1) {
-    let p = path.join(dir, files[i]);
-    fs.unlinkSync(p);
-  }
-}
-
-const loginApi = `http://testyezhi.haofenshu.com/api/hfsfx/fxyz/v1/fx/200511/yj-token?username=${config.userInfo.id}&password=`
 let cookie;
+let browser;
+
+const loginApi = config.getLoginApi(config.userInfo.id);
+const PAGE_TIMEOUT = 60 * 1000 * 5;
 
 expect.extend({ toMatchImageSnapshot });
 
-let browser;
 beforeAll(async (done) => {
-  // cleanDir('tmp');
   browser = await puppeteer.launch(
     {
       // headless: false,
@@ -48,8 +39,6 @@ beforeAll(async (done) => {
 
 let examDesc = `${config.examInfo.name}(${config.examInfo.id})`;
 let userDesc = `${config.userInfo.name}(${config.userInfo.id})`;
-
-const PAGE_TIMEOUT = 60 * 1000 * 5;
 
 async function waitForFns(page, fns) {
   let promiseArr = [];
@@ -95,6 +84,7 @@ async function takeFullPageScreenShot(page, from) {
   const maxScreenshotHeight = Math.floor( bugMaxHeight / dpr );
   const imgArr = [];
   const body = await page.$('body');
+  // TODO: boundingBox vs boxModel
   const contentSize = await body.boundingBox(); 
   await page.setViewport({
     width: Math.ceil(contentSize.width),
@@ -138,10 +128,11 @@ async function takeFullPageScreenShot(page, from) {
   mgImg.writePromise = util.promisify(mgImg.write);
   await mgImg.writePromise(`./tmp/${name}-pdf.png`);
   image = fs.readFileSync(`./tmp/${name}-pdf.png`);
+  // TODO: clean resources
   return image;
 }
 
-function customD(name, cb) {
+function myDescribe(name, cb) {
   let item = reportList.find(item => item.name === name);
   if (item.isSkip) {
     return describe.skip(name, cb)
@@ -152,8 +143,10 @@ function customD(name, cb) {
 
 describe(userDesc, () => {
   describe(examDesc, () => {
-    for(let i = 0; i < reportList.length; i += 1) {
-      let report = reportList[i];
+    // TODO: filter custom runner
+    const list = reportList.filter(item => !item.isCustom);
+    for(let i = 0; i < list.length; i += 1) {
+      let report = list[i];
       if (report.isSkip) continue;
       let {
         name,
@@ -168,16 +161,12 @@ describe(userDesc, () => {
         }
       })
     }
-    customD('学生成绩分析', () => {
+    myDescribe('学生成绩分析', () => {
       test('直升初19级4班 => 丁涵', async () => {
         // throw new Error('yes')
-        console.log('hi')
         const page = await browser.newPage();
-        console.log('hi')
         page.setDefaultTimeout(PAGE_TIMEOUT);
-        console.log('hi')
         await page.setCookie(cookie);
-        console.log('hi')
     
         const REPORT_PATH = '/report/student?examid=43257-84&org=2&grade=直升初二';
         const REPORT_URL = `${config.host}${REPORT_PATH}`
@@ -188,7 +177,6 @@ describe(userDesc, () => {
           await page.waitForFunction(`document.querySelectorAll('.el-select').length === 2`)
           const dropDownList = await page.$$('.el-select');
           // trigger banji dropdown
-          console.log(1)
           await dropDownList[0].click();
           await page.waitFor(1000);
           // wait for banji list appears
@@ -197,37 +185,24 @@ describe(userDesc, () => {
           let activeDropdown1 = firstDropdown1 ? dropdownArr1[0] : dropdownArr1[1];
           let list = await activeDropdown1.$('.el-select-dropdown__list > li')
           // select first banji
-          console.log({list})
-          console.log(2)
           await list.click();
-          console.log(21)
           // wait for students response
-          let res = await page.waitForResponse((res) => res.url().includes('/report/obt/v2/student/list'))
-          console.log(22)
+          await page.waitForResponse((res) => res.url().includes('/report/obt/v2/student/list'))
           // trigger students dropdown
           await dropDownList[1].click();
           await page.waitFor(1000);
-          console.log(23)
           let dropdownArr = await page.$$('.el-select-dropdown');
-          console.log(24)
           let firstDropdown = await dropdownArr[0].boxModel();
-          console.log(25)
           let activeDropdown = firstDropdown ? dropdownArr[0] : dropdownArr[1];
-          console.log(3)
           // find first student
           let target = await activeDropdown.$('.el-select-dropdown__list > li')
-          console.log(31)
           // click first student
           await target.click();
-          console.log(32)
           // wait for render complete
           await page.waitForFunction(`document.querySelectorAll('.el-table').length === 2`)
-          console.log(33)
           await page.waitForFunction(`document.querySelectorAll('canvas').length === 1`)
-          console.log(34)
 
           let image = await takeFullPageScreenShot(page);
-          console.log(35)
           expect(image).toMatchImageSnapshot();
         } catch (e) {
           let errorImagePath = `error_student-score.png`;
@@ -236,19 +211,19 @@ describe(userDesc, () => {
         }
       })
     })
-    customD('必备知识、关键能力与学科素养分析报告', () => {
-      test('报表', async () => {
-        const name = '必备知识、关键能力与学科素养分析报告'
-        const option = {
-          name: '报表',
-          path: '/report/knowledge?examid=43257-84&org=2&grade=直升初二',
-          waitArr: [
-            `document.querySelectorAll('.el-table').length === 6`,
-            `document.querySelectorAll('canvas').length === 2`
-          ]
-        }
-        await testRunner(name, option)
-      })
+    myDescribe('必备知识、关键能力与学科素养分析报告', () => {
+      // test('报表', async () => {
+      //   const name = '必备知识、关键能力与学科素养分析报告'
+      //   const option = {
+      //     name: '报表',
+      //     path: '/report/knowledge?examid=43257-84&org=2&grade=直升初二',
+      //     waitArr: [
+      //       `document.querySelectorAll('.el-table').length === 6`,
+      //       `document.querySelectorAll('canvas').length === 2`
+      //     ]
+      //   }
+      //   await testRunner(name, option)
+      // })
       test('pdf', async () => {
         let path = '/report/knowledge?examid=43257-84&org=2&grade=直升初二';
         let fnList = [
@@ -261,22 +236,28 @@ describe(userDesc, () => {
       
         const REPORT_PATH = path;
         const REPORT_URL = `${config.host}${REPORT_PATH}`
+        console.log('loading page', REPORT_URL)
         await page.goto(REPORT_URL, {
             // 等待页面加载, 直到 500ms 内没有网络请求
             // 另一种等待方式, 比较麻烦: 找出页面用到的所有接口, 使用 waitForResponse 等待所有接口返回
             waitUntil: "networkidle0",
           }
         );
-        try {
-
+          try {
+          console.log('waiting elements', REPORT_URL)
           await waitForFns(page, fnList)
+
           // 查看 pdf 按钮
           let button = await page.$('.total-title-btn');
+
+          console.log('waiting pdf', REPORT_URL)
           // pdf 页面
           const [popup] = await Promise.all([
             new Promise(resolve => page.once('popup', resolve)),
             button.click()
           ]);
+
+          await popup.waitFor(1000)
           const pdfFnList = [
             // 等待页面所有图表渲染完毕
             `document.querySelectorAll('canvas').length === 7`,
@@ -285,12 +266,14 @@ describe(userDesc, () => {
             // 等待页面 loading 消失
             `document.querySelector(".el-loading-mask.is-fullscreen").style.display === "none"`
           ]
+          console.log('waiting pdf elements', REPORT_URL);
           await waitForFns(popup, pdfFnList);
           const image = await takeFullPageScreenShot(popup, 'knowledge');
           expect(image).toMatchImageSnapshot();
-      } catch (error) {
-        await page.screenshot({fullPage: true, path: 'knowledge-pdf-error.png'})
-      }
+        } catch (error) {
+          await page.screenshot({fullPage: true, path: 'knowledge-pdf-error.png'})
+          throw error;
+        }
       })
     })
   });
@@ -299,8 +282,4 @@ describe(userDesc, () => {
 afterAll(async (done) => {
   await browser.close();
   done();
-});
-process.on('uncaughtException', async function(err) {
-  console.log('Caught exception: ' + err);
-  await browser.close();
 });
