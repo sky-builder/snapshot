@@ -52,7 +52,7 @@ app.get('/', function (req, res) {
   let testCases = require('./sync.json')
   let payload = {
     humanizeDuration,
-    results: testResults,
+    testResults: testResults,
     testCases: testCases
   }
   res.render('index', payload)
@@ -61,9 +61,8 @@ app.get('/', function (req, res) {
 let clientList = [];
 function broadcast(clientList, eventName, data) {
   clientList.forEach(client => {
-  client.write(`event: ${eventName}\n`);
-  // TODO: simplify structure
-    client.write(`data: ${JSON.stringify({msg: JSON.stringify(data)})}\n\n`);
+  client.res.write(`event: ${eventName}\n`);
+    client.res.write(`data: ${JSON.stringify(data)}\n\n`);
   })
 }
 
@@ -172,7 +171,7 @@ app.post('/test-update', async (req, res) => {
 
     let srcHtml = 'public/test-report.html';
     let destHtml = `results/reports/${id}.html`
-    let r =await fse.copy(srcHtml, destHtml)
+    let r = await fse.copy(srcHtml, destHtml)
     console.log({r})
 
     db.get('TestResults')
@@ -192,9 +191,14 @@ app.get('/connect', (req, res) => {
     'Cache-Control': 'no-cache'
   };
   res.writeHead(200, headers)
-  // TODO: remove client on need
-  clientList.push(res);
-
+  let clientId = Date.now()
+  clientList.push({
+    id: clientId,
+    res: res
+  });
+  req.on('close', () => {
+    clientList = clientList.filter(client => client.id !== clientId);
+  })
 })
 
 app.listen(3000, () => {

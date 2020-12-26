@@ -45,56 +45,48 @@ event.addEventListener("notice", (e) => {
     isLoading = true;
     updateButtonState();
   }
-  // let data = JSON.parse(e.data);
-  let data = e.data;
-  data = JSON.parse(data);
-  let msg = data.msg;
-  msg = JSON.parse(msg);
-  if (typeof msg === "object") {
-    let data = new Uint8Array(msg.data);
+  console.log(e);
+  let payload = JSON.parse(e.data);
+  if (payload && payload.type.toLowerCase() === "buffer") {
+    let data = new Uint8Array(payload.data);
     data = new TextDecoder("utf-8").decode(data);
     data = data.split("\n");
     data.forEach((line) => {
-      console.log(line);
       term.write(line + "\n\r");
     });
   } else {
-    console.log(data);
     term.write(data + "\n\r");
   }
 });
 event.addEventListener("end", (e) => {
-  let data = e.data;
-  let json = JSON.parse(data);
-  let msg = json.msg;
-  let msgJson = JSON.parse(msg);
-  let li = document.querySelector(`[data-id='${msgJson.id}']`);
+  let data = JSON.parse(e.data);
+  let li = document.querySelector(`[data-id='${data.id}']`);
   let status = li.querySelector('.test__status')
-  status.innerHTML = msgJson.status;
+  status.innerHTML = data.status;
 
   let cmd = document.createElement('div');
-  cmd.innerHTML = `命令: ${msgJson.cmd}`;
+  cmd.innerHTML = `命令: ${data.cmd}`;
 
   let started = document.createElement('div')
-  started.innerHTML = `'开始时间: ' + ${new Date(msgJson.startTime).toLocaleString()}`
+  started.innerHTML = `'开始时间: ' + ${new Date(data.startTime).toLocaleString()}`
 
   let finished = document.createElement('div');
-  finished.innerHTML = `'结束时间: ' + ${new Date(msgJson.endTime).toLocaleString()}`
+  finished.innerHTML = `'结束时间: ' + ${new Date(data.endTime).toLocaleString()}`
 
-  let duration = msgJson.endTime - msgJson.startTime;
+  let duration = data.endTime - data.startTime;
   duration = humanizeDuration(duration);
 
   let d = document.createElement('div')
   d.innerHTML = `持续时间: ${duration}`;
 
   let htmlReport = document.createElement('a');
-  htmlReport.href = msgJson.htmlReport;
+  htmlReport.href = data.htmlReport;
   htmlReport.innerHTML = '查看运行报告'
 
   let checkImages = document.createElement('a');
-  checkImages.href= msgJson.imagesPath;
+  checkImages.href= data.imagesPath;
   checkImages.innerHTML = '查看图片'
-  if (msgJson.status === 'passed') {
+  if (data.status === 'passed') {
     li.classList.add('test__result--passed')
   } else {
     li.classList.add('test__result--failed')
@@ -113,23 +105,19 @@ event.addEventListener("end", (e) => {
 });
 
 event.addEventListener("new", (e) => {
-  let data = e.data;
-  let json = JSON.parse(data);
-  let msg = json.msg;
-  let msgJson = JSON.parse(msg);
+  let data = JSON.parse(e.data);
   isLoading = false;
 
   let li = document.createElement('li')
-  li.setAttribute('data-id', msgJson.id)
+  li.setAttribute('data-id', data.id)
   li.classList.add('test__result')
   let id = document.createElement('div')
-  id.innerHTML = '#' + msgJson.id;
+  id.innerHTML = '#' + data.id;
   let status = document.createElement('div');
   status.classList.add('test__status')
-  status.innerHTML = msgJson.status;
+  status.innerHTML = data.status;
   li.appendChild(id);
   li.appendChild(status);
-  console.log(li)
   let ul = document.querySelector('.test__result-list');
   ul.insertBefore(li, ul.firstElementChild)
 

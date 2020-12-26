@@ -15,11 +15,10 @@ html(lang="en")
       div.test__results
         h5(class="title is-5") 运行记录
         ul.test__result-list
-          each item in results
+          each item in testResults
             -
               let duration = item.endTime - item.startTime;
               duration = humanizeDuration(duration);
-            //- TODO: why testResults is an Array ?
             li(class='test__result' data-id=item.id class=item.status === 'passed' ? 'test__result--passed' : 'test__result--failed')
               .test__id= '#' + item.id
               .test__status= item.status
