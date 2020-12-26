@@ -6,6 +6,8 @@ const envHostMap = {
   'production': 'http://fenxi.haofenshu.com',
 }
 module.exports = {
+  // page timeout 10mins, should smaller than jest.config.js
+  PAGE_TIMEOUT: 1000 * 60 * 10,
   host: envHostMap[NODE_ENV],
   getLoginApi: (userId) => `http://testyezhi.haofenshu.com/api/hfsfx/fxyz/v1/fx/200511/yj-token?username=${userId}&password=`
 }
