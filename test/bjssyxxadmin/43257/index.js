@@ -212,18 +212,18 @@ describe(userDesc, () => {
       })
     })
     myDescribe('必备知识、关键能力与学科素养分析报告', () => {
-      // test('报表', async () => {
-      //   const name = '必备知识、关键能力与学科素养分析报告'
-      //   const option = {
-      //     name: '报表',
-      //     path: '/report/knowledge?examid=43257-84&org=2&grade=直升初二',
-      //     waitArr: [
-      //       `document.querySelectorAll('.el-table').length === 6`,
-      //       `document.querySelectorAll('canvas').length === 2`
-      //     ]
-      //   }
-      //   await testRunner(name, option)
-      // })
+      test('报表', async () => {
+        const name = '必备知识、关键能力与学科素养分析报告'
+        const option = {
+          name: '报表',
+          path: '/report/knowledge?examid=43257-84&org=2&grade=直升初二',
+          waitArr: [
+            `document.querySelectorAll('.el-table').length === 6`,
+            `document.querySelectorAll('canvas').length === 2`
+          ]
+        }
+        await testRunner(name, option)
+      })
       test('pdf', async () => {
         let path = '/report/knowledge?examid=43257-84&org=2&grade=直升初二';
         let fnList = [

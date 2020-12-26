@@ -5,7 +5,7 @@ const app = express();
 
 const humanizeDuration = require('humanize-duration')
 
-const { spawn } = require('child_process');
+const { spawn, exec } = require('child_process');
 const fse = require('fs-extra');
 const path = require('path')
 
@@ -16,6 +16,7 @@ const db = low(adapter)
 db.defaults({ TestResults: []})
   .write()
 
+const isWindows = process.platform === "win32";
 const getId = () => {
   let result = 1;
   let tests = db.get('TestResults')
@@ -104,6 +105,7 @@ app.post('/test-prod', (req, res) => {
 })
 
 app.post('/test-update', async (req, res) => {
+  console.log('run test-update')
   run(req, res, 'test-update')
 })
 
@@ -138,8 +140,10 @@ if (runningCase) {
   res.end('there is running case, please wait.')
   return;
 }
-// TODO: switch to npm on linux
-let ls = spawn('npm.cmd', ['run', cmd])
+res.end(cmd, 'is running');
+
+let npm = isWindows ? 'npm.cmd' : 'npm';
+let ls = spawn(npm, ['run', cmd])
 
 let isPassed = true;
 let currentTest = {
@@ -157,6 +161,7 @@ ls.stdout.on('data', (data) => {
   if (data.toString().includes('FAIL')) isPassed = false;
   broadcast(clientList, 'notice', data)
 });
+
 
 ls.stderr.on('data', (data) => {
   console.log(`stderr: ${data}`);
@@ -194,6 +199,5 @@ ls.on('close', async (code) => {
     .write();
   broadcast(clientList, 'end', currentTest)
   id += 1;
-  res.end('ok')
 })
 }
