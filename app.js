@@ -59,6 +59,22 @@ app.get('/', function (req, res) {
   res.render('index', payload)
 })
 
+function logServerStats() {
+  if (isWindows) return;
+  exec('sh server-info.sh',  (error, stdout, stderr) => {
+    console.log(stdout);
+    console.log(stderr);
+    if (error !== null) {
+        console.log(`exec error: ${error}`);
+        broadcast(clientList, 'stat', result);
+        setTimeout(() => {
+          logServerStats()
+        }, 1000 * 10);
+    }
+  })
+}
+logServerStats();
+
 let clientList = [];
 function broadcast(clientList, eventName, data) {
   clientList.forEach(client => {
