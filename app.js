@@ -12,9 +12,7 @@ const path = require('path')
 const FileSync = require('lowdb/adapters/FileSync')
 const adapter = new FileSync('db.json')
 const low = require('lowdb');
-const { runInContext } = require('vm');
 const db = low(adapter)
-
 db.defaults({ TestResults: []})
   .write()
 
@@ -136,20 +134,19 @@ app.post('/test-update', async (req, res) => {
     status: 'running',
     startTime: new Date().getTime(),
   };
-
   broadcast(clientList, 'new', currentTest)
   db.get('TestResults')
     .push(currentTest)
     .write();
   
   ls.stdout.on('data', (data) => {
-    // console.log(`stdout: ${data}`);
+    console.log(`stdout: ${data}`);
     if (data.toString().includes('FAIL')) isPassed = false;
     broadcast(clientList, 'notice', data)
   });
 
   ls.stderr.on('data', (data) => {
-    // console.log(`stderr: ${data}`);
+    console.log(`stderr: ${data}`);
     if (data.toString().includes('FAIL')) isPassed = false;
     broadcast(clientList, 'notice', data)
   });
@@ -169,12 +166,14 @@ app.post('/test-update', async (req, res) => {
     
     // TODO: find a better memory saving way
     const srcDir = 'test';
-    const destDir = '/results/images/' + id;
+    const destDir = 'results/images/' + id;
+    console.log({srcDir}, destDir);
     await fse.copy(srcDir, destDir)
 
     let srcHtml = 'public/test-report.html';
-    let destHtml = `/results/reports/${id}.html`
-    await fse.copy(srcHtml, destHtml)
+    let destHtml = `results/reports/${id}.html`
+    let r =await fse.copy(srcHtml, destHtml)
+    console.log({r})
 
     db.get('TestResults')
       .find({id})

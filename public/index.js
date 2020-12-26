@@ -1,16 +1,5 @@
-async function updateTest() {
+async function runTest() {
   await parseCases();
-  axios
-    .post("/test-update")
-    .then((res) => {
-      console.log({ res });
-    })
-    .catch((err) => {
-      console.error(err);
-    });
-}
-
-function runTest() {
   let select = document.querySelector('select')
   let value = select.value;
   let envApiTable = {
