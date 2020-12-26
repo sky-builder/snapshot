@@ -3,7 +3,7 @@
  */
 const fs = require("fs");
 const path = require("path");
-const ignoreFiles = ['config.js', 'index.js'];
+const ignoreFiles = ['config.js', 'index.js', 'utils.js'];
 
 function filterFiles(files) {
   let result = files.filter((u) => !ignoreFiles.includes(u));

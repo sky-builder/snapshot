@@ -80,6 +80,7 @@ async function testRunner(browser, option) {
   page.setDefaultTimeout(PAGE_TIMEOUT);
   await page.setCookie(cookie);
   const URL = `${host}${path}`
+  console.log('goto ', URL)
   await page.goto(URL, {
     // 等待页面加载, 直到 500ms 内没有网络请求
     // 另一种等待方式, 比较麻烦: 找出页面用到的所有接口, 使用 waitForResponse 等待所有接口返回
@@ -174,7 +175,7 @@ async function xgkKnowledgeReportRunner(browser, config) {
     PAGE_TIMEOUT,
     cookie,
     host
-  }
+  } = config;
   const page = await browser.newPage();
   page.setDefaultTimeout(PAGE_TIMEOUT);
   await page.setCookie(cookie);
