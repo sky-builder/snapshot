@@ -67,27 +67,7 @@ function broadcast(clientList, eventName, data) {
 }
 
 app.post('/test-test', (req, res) => {
-  let ls = spawn('npm.cmd', ['run', 'test-test'])
-  
-  let isPassed = true;
-  ls.stdout.on('data', (data) => {
-    if (data.toString().includes('FAIL')) isPassed = false;
-    console.log(`stdout: ${data}`);
-    broadcast(clientList, 'notice', data)
-  });
-
-  ls.stderr.on('data', (data) => {
-    if (data.toString().includes('FAIL')) isPassed = false;
-    console.log(`stderr: ${data}`);
-    broadcast(clientList, 'notice', data)
-  });
-
-  ls.on('close', (code) => {
-    console.log(`child process exited with code ${code}`);
-    res.end('thank you')
-    
-    broadcast(clientList, 'end', 'thank you')
-  })
+  run(req, res, 'test-test')
 })
 
 // 将用户选择的测试范围用来更新 report-list.json
@@ -115,73 +95,16 @@ app.post('/sync', async(req, res) => {
   res.end('ok')
 })
 
+app.post('/test-gray', (req, res) => {
+  run(req, res, 'test-gray')
+})
+
+app.post('/test-prod', (req, res) => {
+  run(req, res, 'test-prod')
+})
+
 app.post('/test-update', async (req, res) => {
-  let runningCase = 
-    db.get('testResults')
-      .find(item => item.status === 'running')
-      .value()
-  if (runningCase) {
-    console.log({runningCase})
-    res.end('there is running case, please wait.')
-    return;
-  }
-  let ls = spawn('npm.cmd', ['run', 'test-update'])
-
-  let isPassed = true;
-  let currentTest = {
-    id: id,
-    status: 'running',
-    startTime: new Date().getTime(),
-  };
-  broadcast(clientList, 'new', currentTest)
-  db.get('TestResults')
-    .push(currentTest)
-    .write();
-  
-  ls.stdout.on('data', (data) => {
-    console.log(`stdout: ${data}`);
-    if (data.toString().includes('FAIL')) isPassed = false;
-    broadcast(clientList, 'notice', data)
-  });
-
-  ls.stderr.on('data', (data) => {
-    console.log(`stderr: ${data}`);
-    if (data.toString().includes('FAIL')) isPassed = false;
-    broadcast(clientList, 'notice', data)
-  });
-  
-  ls.on('close', async (code) => {
-    console.log(`child process exited with code ${code}`);
-
-    let endTime = new Date().getTime();
-    let tmp = {
-      cmd: 'update',
-      endTime,
-      status: isPassed ? 'passed' : 'failed',
-      imagesPath: `/images/${id}/`,
-      htmlReport: `/reports/${id}.html`
-    } 
-    currentTest = Object.assign({}, currentTest, tmp);
-    
-    // TODO: find a better memory saving way
-    const srcDir = 'test';
-    const destDir = 'results/images/' + id;
-    console.log({srcDir}, destDir);
-    await fse.copy(srcDir, destDir)
-
-    let srcHtml = 'public/test-report.html';
-    let destHtml = `results/reports/${id}.html`
-    let r = await fse.copy(srcHtml, destHtml)
-    console.log({r})
-
-    db.get('TestResults')
-      .find({id})
-      .assign(currentTest)
-      .write();
-    broadcast(clientList, 'end', currentTest)
-    id += 1;
-    res.end('ok')
-  })
+  run(req, res, 'test-update')
 })
 
 app.get('/connect', (req, res) => {
@@ -204,3 +127,72 @@ app.get('/connect', (req, res) => {
 app.listen(3000, () => {
   console.log('server listening on port: 3000.');
 })
+
+function run(req, res, cmd) {
+  let runningCase = 
+  db.get('testResults')
+    .find(item => item.status === 'running')
+    .value()
+if (runningCase) {
+  console.log({runningCase})
+  res.end('there is running case, please wait.')
+  return;
+}
+let ls = spawn('npm.cmd', ['run', cmd])
+
+let isPassed = true;
+let currentTest = {
+  id: id,
+  status: 'running',
+  startTime: new Date().getTime(),
+};
+broadcast(clientList, 'new', currentTest)
+db.get('TestResults')
+  .push(currentTest)
+  .write();
+
+ls.stdout.on('data', (data) => {
+  console.log(`stdout: ${data}`);
+  if (data.toString().includes('FAIL')) isPassed = false;
+  broadcast(clientList, 'notice', data)
+});
+
+ls.stderr.on('data', (data) => {
+  console.log(`stderr: ${data}`);
+  if (data.toString().includes('FAIL')) isPassed = false;
+  broadcast(clientList, 'notice', data)
+});
+
+ls.on('close', async (code) => {
+  console.log(`child process exited with code ${code}`);
+
+  let endTime = new Date().getTime();
+  let tmp = {
+    cmd: 'update',
+    endTime,
+    status: isPassed ? 'passed' : 'failed',
+    imagesPath: `/images/${id}/`,
+    htmlReport: `/reports/${id}.html`
+  } 
+  currentTest = Object.assign({}, currentTest, tmp);
+  
+  // TODO: find a better memory saving way
+  const srcDir = 'test';
+  const destDir = 'results/images/' + id;
+  console.log({srcDir}, destDir);
+  await fse.copy(srcDir, destDir)
+
+  let srcHtml = 'public/test-report.html';
+  let destHtml = `results/reports/${id}.html`
+  let r = await fse.copy(srcHtml, destHtml)
+  console.log({r})
+
+  db.get('TestResults')
+    .find({id})
+    .assign(currentTest)
+    .write();
+  broadcast(clientList, 'end', currentTest)
+  id += 1;
+  res.end('ok')
+})
+}

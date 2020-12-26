@@ -6,7 +6,7 @@ async function runTest() {
     'test': '/test-test',
     'update': '/test-update',
     'gray': '/test-gray',
-    'release': '/test-release'
+    'prod': '/test-prod'
   }
   let api = envApiTable[value];
   axios.post(api)
