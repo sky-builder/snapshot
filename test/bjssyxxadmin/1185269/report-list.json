@@ -1,0 +1,15 @@
+[
+  { 
+    "name": "教学班成绩明细查看 - 报表",
+    "path": "/report/lesson?examid=1185269-84&grade=高一&org=0",
+    "waitArr": [
+      "document.querySelectorAll('canvas').length === 2",
+      "document.querySelectorAll('.el-table').length === 4"
+    ]
+  },
+  {
+    "name": "学生成绩分析",
+    "path": "/report/student?examid=1185269-84&org=0&grade=高一",
+    "isCustom": true
+  } 
+]
