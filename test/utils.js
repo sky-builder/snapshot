@@ -122,36 +122,34 @@ async function ZoubanStudentReportRunner(browser, config) {
     await dropDownList[0].click();
     await page.waitFor(1000);
     // wait for banji list appears
-    let dropdownArr1 = await page.$$('.el-select-dropdown');
-    let firstDropdown1 = await dropdownArr1[0].boxModel();
-    let secondDropdown1 = await dropdownArr1[1].boxModel();
-    let activeDropdown1 = firstDropdown1 ? dropdownArr1[0] : secondDropdown1 ? dropdownArr1[1] : dropdownArr1[2];
-    let list = await activeDropdown1.$('.el-select-dropdown__list > li')
+    const getActiveDropdownListFirstItem = async () => {
+      let dropdownList =  await page.$$('.el-select-dropdown');
+      let psList = [];
+      dropdownList.forEach(item => {
+        psList.push(item.boxModel());
+      })
+      let results = await Promise.all(psList);
+      let activeIndex = results.findIndex(item => item);
+      let activeList = dropDownList[activeIndex];
+      let firstItem = await activeList.$('.el-select-dropdown__list > li')
+      return firstItem;
+    }
+    let target = await getActiveDropdownListFirstItem();
     // select first banji
-    await list.click();
+    await target.click();
+    // after select subject, banjis can be found from examInfo, no need to wait for response
     await page.waitFor(1000);
-    // wait for students response
     // trigger students dropdown
     await dropDownList[1].click();
     await page.waitFor(1000);
-    let dropdownArr = await page.$$('.el-select-dropdown');
-    let firstDropdown = await dropdownArr[0].boxModel();
-    let secondDropdown = await dropdownArr[1].boxModel();
-    let activeDropdown = firstDropdown ? dropdownArr[0] : secondDropdown ? dropdownArr[1] : dropdownArr[2];
-    // find first student
-    let target = await activeDropdown.$('.el-select-dropdown__list > li')
-    // click first student
+    target = await getActiveDropdownListFirstItem();
     await target.click();
     await page.waitForResponse((res) => res.url().includes('/report/obt/v2/student/list'))
 
     await dropDownList[2].click();
     await page.waitFor(1000);
-    dropdownArr = await page.$$('.el-select-dropdown');
-    firstDropdown = await dropdownArr[0].boxModel();
-    secondDropdown = await dropdownArr[1].boxModel();
-    activeDropdown = firstDropdown ? dropdownArr[0] : secondDropdown ? dropdownArr[1] : dropdownArr[2];
     // find first student
-    target = await activeDropdown.$('.el-select-dropdown__list > li')
+    target = await getActiveDropdownListFirstItem();
     // click first student
     await target.click();
 
