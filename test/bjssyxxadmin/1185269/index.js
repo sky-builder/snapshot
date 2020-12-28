@@ -10,14 +10,13 @@ let cookie;
 let browser;
 
 const loginApi = config.getLoginApi(config.userInfo.id);
-const PAGE_TIMEOUT = 60 * 1000 * 5;
 
 expect.extend({ toMatchImageSnapshot });
 
 beforeAll(async (done) => {
   browser = await puppeteer.launch(
     {
-      headless: false,
+      // headless: false,
       args: [ 
         '--no-sandbox', 
         '--disable-dev-shm-usage'
@@ -38,16 +37,11 @@ let examDesc = `${config.examInfo.name}(${config.examInfo.id})`;
 let userDesc = `${config.userInfo.name}(${config.userInfo.id})`;
 
 describe(userDesc + examDesc, () => {
-  // TODO: filter custom runner
   const list = reportList.filter(item => !item.isCustom);
   for(let i = 0; i < list.length; i += 1) {
     if (list[i].isSkip) continue;
     test(list[i].name, async () => {
-      const options = Object.assign({}, list[i], {
-        cookie,
-        host: config.host,
-        PAGE_TIMEOUT
-      })
+      const options = Object.assign({}, config, list[i], {cookie})
       let runner = list[i].runner;
       await utils[runner](browser, options);
     })

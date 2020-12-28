@@ -1,12 +1,1 @@
-[
-  {
-    "name": "班级分析报告 - 报表",
-    "path": "/report/class?examid=1164003-84&grade=直升高一&org=0",
-    "runner": "testRunner",
-    "waitArr": [
-      "document.querySelectorAll('canvas').length === 2",
-      "document.querySelectorAll('.el-table').length === 4"
-    ],
-    "isSkip": false
-  }
-]
+[{"name":"班级分析报告 - 报表","path":"/report/class?examid=1164003-84&grade=直升高一&org=0","runner":"testRunner","waitArr":["document.querySelectorAll('canvas').length === 2","document.querySelectorAll('.el-table').length === 4"],"isSkip":false}]
