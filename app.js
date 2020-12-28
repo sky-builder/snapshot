@@ -204,7 +204,7 @@ ls.on('close', async (code) => {
   console.log({srcDir}, destDir);
   await fse.copy(srcDir, destDir)
 
-  let srcHtml = 'public/test-report.html';
+  let srcHtml = 'tmp/test-report.html';
   let destHtml = `results/reports/${id}.html`
   let r = await fse.copy(srcHtml, destHtml)
   console.log({r})
