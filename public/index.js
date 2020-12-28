@@ -64,10 +64,10 @@ event.addEventListener("end", (e) => {
   cmd.innerHTML = `命令: ${data.cmd}`;
 
   let started = document.createElement('div')
-  started.innerHTML = `开始时间:  + ${new Date(data.startTime).toLocaleString()}`
+  started.innerHTML = `开始时间: ${new Date(data.startTime).toLocaleString()}`
 
   let finished = document.createElement('div');
-  finished.innerHTML = `结束时间:  + ${new Date(data.endTime).toLocaleString()}`
+  finished.innerHTML = `结束时间: ${new Date(data.endTime).toLocaleString()}`
 
   let duration = data.endTime - data.startTime;
   duration = humanizeDuration(duration);
