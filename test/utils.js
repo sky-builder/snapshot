@@ -74,33 +74,39 @@ async function testRunner(browser, option) {
     host,
     PAGE_TIMEOUT
   } = option;
-  console.log('start running', name, path)
-  const page = await browser.newPage();
-  // await page.setViewport({width: 800, height: 600, deviceScaleFactor: 0.8})
-  page.setDefaultTimeout(PAGE_TIMEOUT);
-  await page.setCookie(cookie);
-  const URL = `${host}${path}`
-  console.log('goto ', URL)
-  await page.goto(URL, {
-    // 等待页面加载, 直到 500ms 内没有网络请求
-    // 另一种等待方式, 比较麻烦: 找出页面用到的所有接口, 使用 waitForResponse 等待所有接口返回
-    waitUntil: "networkidle0",
-  }
-);
-  console.log(name, 'waiting elements')
-  await waitForFns(page, waitArr);
-  
-  console.log(name, 'waiting screenshot')
-  let image = await takeFullPageScreenShot(page);
-  await page.close();
+    console.log('start running', name, path)
+    const page = await browser.newPage();
+    // await page.setViewport({width: 800, height: 600, deviceScaleFactor: 0.8})
+    page.setDefaultTimeout(PAGE_TIMEOUT);
+    await page.setCookie(cookie);
+    const URL = `${host}${path}`
+    console.log('goto ', URL)
+    try {
+      await page.goto(URL, {
+        // 等待页面加载, 直到 500ms 内没有网络请求
+        // 另一种等待方式, 比较麻烦: 找出页面用到的所有接口, 使用 waitForResponse 等待所有接口返回
+          waitUntil: "networkidle0",
+        }
+      );
+      console.log(name, 'waiting elements')
+      await waitForFns(page, waitArr);
+      
+      console.log(name, 'waiting screenshot')
+      let image = await takeFullPageScreenShot(page);
+      await page.close();
 
-  console.log(name, 'waiting assertion')
-  expect(image).toMatchImageSnapshot()
-  console.log('stop running', name)
+      console.log(name, 'waiting assertion')
+      expect(image).toMatchImageSnapshot()
+      console.log('stop running', name)
+    } catch (error) {
+      await page.screenshot({path: `./tmp/${name}-error.png`})
+      throw error;
+    }
 }
 
 async function ZoubanStudentReportRunner(browser, config) {
   const {
+    name,
     cookie,
     PAGE_TIMEOUT,
     waitArr,
@@ -160,7 +166,7 @@ async function ZoubanStudentReportRunner(browser, config) {
     expect(image).toMatchImageSnapshot();
 
   } catch (e) {
-    let errorImagePath = `error_student-score.png`;
+    let errorImagePath = `./tmp/${name}-error.png`;
     await page.screenshot({path: errorImagePath, fullPage: true})
     throw e;
   }
