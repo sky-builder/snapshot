@@ -42,7 +42,7 @@ html(lang="en")
           button(onclick="runTest()" class="button test-button" id="btn-update-test") 运行
         div.test__cases
           h5(class="title is-5") 测试用例
-          h6(class="subtitle is-6") 目前支持的用例, 以 "账号id-考试id-报表" 三级格式进行组织, 通过勾选/取消勾选来确定测试范围
+          h6(class="subtitle is-6") 目前支持的用例, 以 "账号id-考试id-报表类型" 三级格式进行组织, 通过勾选和取消勾选来确定测试范围
           ul
             each item in testCases
               li(class="test__user-id" data-id=item.userId)= item.userId
@@ -57,6 +57,6 @@ html(lang="en")
                             input(type="checkbox" id=`${item.userId}-${e.examId}-${r.name}` checked)
         div.test__console
           h5(class="title is-5") 控制台
-          h6(class="subtitle is-6") 实时显示服务器运行自动化测试时产生的日志
+          h6(class="subtitle is-6") 实时显示服务器运行日志
           <div class="test__log" id="terminal"></div>
     script(src="index.js")

@@ -10,15 +10,12 @@ async function runTest() {
   }
   let api = envApiTable[value];
   axios.post(api)
-  .then((res) => {
-    console.log({ res });
-  })
   .catch((err) => {
     console.error(err);
   });
 }
 var term = new Terminal({
-  cols: 80,
+  cols: 120,
   theme: {
     foreground: '#222',
     background: '#fdf6e3'
@@ -45,7 +42,6 @@ event.addEventListener("notice", (e) => {
     isLoading = true;
     updateButtonState();
   }
-  console.log(e);
   let payload = JSON.parse(e.data);
   if (payload && payload.type.toLowerCase() === "buffer") {
     let data = new Uint8Array(payload.data);
@@ -68,10 +64,10 @@ event.addEventListener("end", (e) => {
   cmd.innerHTML = `命令: ${data.cmd}`;
 
   let started = document.createElement('div')
-  started.innerHTML = `'开始时间: ' + ${new Date(data.startTime).toLocaleString()}`
+  started.innerHTML = `开始时间:  + ${new Date(data.startTime).toLocaleString()}`
 
   let finished = document.createElement('div');
-  finished.innerHTML = `'结束时间: ' + ${new Date(data.endTime).toLocaleString()}`
+  finished.innerHTML = `结束时间:  + ${new Date(data.endTime).toLocaleString()}`
 
   let duration = data.endTime - data.startTime;
   duration = humanizeDuration(duration);
@@ -145,7 +141,6 @@ async function parseCases() {
         reports.forEach(re => {
           let ooo = {};
           ooo.name = re.getAttribute('data-id');
-          console.log(re.querySelector('input'))
           let input = re.querySelector('input').checked
           ooo.isSkip = !input;
           oo.reportList.push(ooo);
@@ -154,11 +149,9 @@ async function parseCases() {
       })
       result.push(o);
     })
-    console.log(result);
     axios.post('/sync', {cases: result})
     .then(res => {
-      console.log({res})
-      resolve();
+      resolve(res);
     })
     .catch(err => {
       console.error(err)
