@@ -115,6 +115,10 @@ app.post('/test-gray', (req, res) => {
   run(req, res, 'test-gray')
 })
 
+app.post('/test-dev', (req, res) => {
+  run(req, res, 'test-dev')
+})
+
 app.post('/test-prod', (req, res) => {
   run(req, res, 'test-prod')
 })

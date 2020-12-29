@@ -3,6 +3,7 @@ async function runTest() {
   let select = document.querySelector('select')
   let value = select.value;
   let envApiTable = {
+    'dev': '/test-dev',
     'test': '/test-test',
     'update': '/test-update',
     'gray': '/test-gray',
