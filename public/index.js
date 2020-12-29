@@ -22,10 +22,19 @@ var term = new Terminal({
   }
 });
 
+let isLoading = false;
+window.onload = () => {
+  let runningTest = document.querySelector('.test__result--running');
+  console.log('running', runningTest)
+  if (runningTest) {
+    isLoading = true;
+    this.updateButtonState()
+  }
+}
+
 term.open(document.getElementById("terminal"));
 
 const event = new EventSource("/connect");
-let isLoading = false;
 const btnUpdateTest = document.getElementById("btn-update-test");
 
 function updateButtonState() {
@@ -105,6 +114,7 @@ event.addEventListener("end", (e) => {
   } else {
     li.classList.add('test__result--failed')
   }
+  li.classList.remove('test__result--running')
 
   li.appendChild(cmd)
   li.appendChild(started)
@@ -125,6 +135,7 @@ event.addEventListener("new", (e) => {
   let li = document.createElement('li')
   li.setAttribute('data-id', data.id)
   li.classList.add('test__result')
+  li.classList.add('test__result--running')
   let id = document.createElement('div')
   id.innerHTML = '#' + data.id;
   let status = document.createElement('div');

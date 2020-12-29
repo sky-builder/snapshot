@@ -19,16 +19,21 @@ html(lang="en")
             -
               let duration = item.endTime - item.startTime;
               duration = humanizeDuration(duration);
-            li(class='test__result' data-id=item.id class=item.status === 'passed' ? 'test__result--passed' : 'test__result--failed')
-              .test__id= '#' + item.id
-              .test__status= item.status
-              .test__cmd= '命令: ' + item.cmd
-              .test__started= '开始时间: ' + new Date(item.startTime).toLocaleString()
-              .test__finished= '结束时间: ' + new Date(item.endTime).toLocaleString()
-              .test__duration= '持续时间: ' + duration
-              a(href=item.htmlReport) 查看运行报告
-              br
-              a(href=item.imagesPath) 查看图片
+            if item.status === 'running'
+              li(class="test__result test__result--running" data-id=item.id)
+                .test__id= '#' + item.id
+                .test__status running
+            else
+              li(class='test__result' data-id=item.id class=item.status === 'passed' ? 'test__result--passed' : 'test__result--failed')
+                .test__id= '#' + item.id
+                .test__status= item.status
+                .test__cmd= '命令: ' + item.cmd
+                .test__started= '开始时间: ' + new Date(item.startTime).toLocaleString()
+                .test__finished= '结束时间: ' + new Date(item.endTime).toLocaleString()
+                .test__duration= '持续时间: ' + duration
+                a(href=item.htmlReport) 查看运行报告
+                br
+                a(href=item.imagesPath) 查看图片
       div.test__details 
         div(class="action-bar")
           label(for="action") 命令: &nbsp;&nbsp;&nbsp;&nbsp;
