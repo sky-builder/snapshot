@@ -57,6 +57,9 @@ html(lang="en")
                             input(type="checkbox" id=`${item.userId}-${e.examId}-${r.name}` checked)
         div.test__console
           h5(class="title is-5") 控制台
-          h6(class="subtitle is-6") 实时显示服务器运行日志
+          h6(class="subtitle is-6")
+            p(id="memory-usage") 内存使用率: 50%
+            p(id="disk-usage") 磁盘使用率: 20%
+            p(id="cpu-load") CPU 负载: 20%
           <div class="test__log" id="terminal"></div>
     script(src="index.js")

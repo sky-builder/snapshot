@@ -36,6 +36,25 @@ function updateButtonState() {
     button.classList[method]("is-loading");
   })
 }
+event.addEventListener('stat', (e) => {
+  let payload = JSON.parse(e.data);
+  let data = payload;
+  if (payload && payload.type.toLowerCase() === "buffer") {
+    data = new Uint8Array(payload.data);
+    data = new TextDecoder("utf-8").decode(data);
+    data = data.split("\n");
+  }
+  data = data.split('\n')
+  data[0] = data[0].replace('Memory Usage', '内存使用率')
+  data[1] = data[1].replace('Disk Usage', '磁盘使用率')
+  data[2] = data[2].replace('CPU Load', 'CPU 负载')
+  let mu = document.getElementById('memory-usage');
+  mu.innerHTML = data[0];
+  let du = document.getElementById('disk-usage');
+  du.innerHTML = data[1];
+  let cl = document.getElementById('cpu-load');
+  cl.innerHTML = data[2];
+})
 event.addEventListener("notice", (e) => {
   if (!isLoading) {
     isLoading = true;

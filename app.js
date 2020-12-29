@@ -61,12 +61,11 @@ app.get('/', function (req, res) {
 
 function logServerStats() {
   if (isWindows) return;
-  exec('sh server-info.sh',  (error, stdout, stderr) => {
+  exec('sh server-stat.sh',  (error, stdout, stderr) => {
     console.log(stdout);
     console.log(stderr);
-    if (error !== null) {
-        console.log(`exec error: ${error}`);
-        broadcast(clientList, 'stat', result);
+    if (!error) {
+        broadcast(clientList, 'stat', stdout);
         setTimeout(() => {
           logServerStats()
         }, 1000 * 10);
