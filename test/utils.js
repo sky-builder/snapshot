@@ -136,7 +136,7 @@ async function ZoubanStudentReportRunner(browser, config) {
       })
       let results = await Promise.all(psList);
       let activeIndex = results.findIndex(item => item);
-      let activeList = dropDownList[activeIndex];
+      let activeList = dropdownList[activeIndex];
       let firstItem = await activeList.$('.el-select-dropdown__list > li')
       return firstItem;
     }
