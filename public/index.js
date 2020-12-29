@@ -39,7 +39,7 @@ function updateButtonState() {
 event.addEventListener('stat', (e) => {
   let payload = JSON.parse(e.data);
   let data = payload;
-  if (payload && payload.type.toLowerCase() === "buffer") {
+  if (payload && payload.type && payload.type.toLowerCase() === "buffer") {
     data = new Uint8Array(payload.data);
     data = new TextDecoder("utf-8").decode(data);
     data = data.split("\n");
