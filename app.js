@@ -189,7 +189,7 @@ ls.on('close', async (code) => {
 
   let endTime = new Date().getTime();
   let tmp = {
-    cmd: 'update',
+    cmd: cmd,
     endTime,
     status: isPassed ? 'passed' : 'failed',
     imagesPath: `/images/${id}/`,
