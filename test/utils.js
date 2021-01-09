@@ -64,16 +64,134 @@ async function takeFullPageScreenShot(page, from) {
   // TODO: clean resources
   return image;
 }
+async function getClipList(page, from) {
+  const bugMaxHeight = 16 * 1024;
+  const dpr = page.viewport().deviceScaleFactor || 1;
+  const maxScreenshotHeight = Math.floor( bugMaxHeight / dpr );
+  const body = await page.$('body');
+  // TODO: boundingBox vs boxModel
+  const contentSize = await body.boundingBox(); 
+  await page.setViewport({
+    width: Math.ceil(contentSize.width),
+    height: Math.ceil(contentSize.height)
+  })
+  let mh = contentSize.height;
+  let clipList = [];
+  for ( let ypos = 0; ypos < mh; ypos += maxScreenshotHeight ) {
+    const height = Math.min( mh - ypos, maxScreenshotHeight );
+    let clip = {
+      x: 0,
+      y: ypos,
+      width: contentSize.width,
+      height
+    }
+    clipList.push(clip);
+  }
+  return clipList;
+}
+async function drillingRunner(browser, option) {
+  const {
+    name,
+    waitArr,
+    cookie,
+    host,
+    PAGE_TIMEOUT,
+    drillingSelector,
+    studentDialogSelector
+  } = option;
+  let {
+    path
+  } = option;
+  if (process.env.NODE_ENV === 'dev') {
+    path = path.replace('/report', '');
+  }
+    console.log('start running', name, path)
+    const page = await browser.newPage();
+    // await page.setViewport({width: 800, height: 600, deviceScaleFactor: 0.8})
+    page.setDefaultTimeout(PAGE_TIMEOUT);
+    await page.setCookie(cookie);
+    const URL = `${host}${path}`
+    console.log('goto ', URL)
+    try {
+      await page.goto(URL, {
+        // 等待页面加载, 直到 500ms 内没有网络请求
+        // 另一种等待方式, 比较麻烦: 找出页面用到的所有接口, 使用 waitForResponse 等待所有接口返回
+          waitUntil: "networkidle0",
+        }
+      );
+      console.log(name, 'waiting elements')
+      await waitForFns(page, waitArr);
+      console.log(name, 'select')
+      const drillingEl = await page.$(drillingSelector);
+      console.log(name, 'click')
+      await drillingEl.click();
+      console.log(name, 'wait for .student-dialog')
+      const studentDialog = await page.waitForSelector(studentDialogSelector, {
+        visible: true
+      });
+      console.log(name, 'wait for table')
+      await page.waitForFunction('document.querySelectorAll(".student-dialog .el-table")')
+      await page.waitForFunction('document.querySelector(".student-dialog .el-loading-mask").style.display === "none"')
+      console.log(name, 'taking screenshot')
+      const image = await studentDialog.screenshot();
+      expect(image).toMatchImageSnapshot()
+      console.log('stop running', name)
+    } catch (error) {
+      await page.screenshot({path: `./tmp/${name}-error.png`})
+      throw error;
+    }
+}
+async function pdfRunner(browser, option) {
+  const {
+    name,
+    waitArr,
+    cookie,
+    host,
+    PAGE_TIMEOUT
+  } = option;
+  let {
+    path
+  } = option;
+  if (process.env.NODE_ENV === 'dev') {
+    path = path.replace('/report', '');
+  }
+    console.log('start running', name, path)
+    const page = await browser.newPage();
+    // await page.setViewport({width: 800, height: 600, deviceScaleFactor: 0.8})
+    page.setDefaultTimeout(PAGE_TIMEOUT);
+    await page.setCookie(cookie);
+    const URL = `${host}${path}`
+    console.log('goto ', URL)
+    await page.goto(URL, {
+      // 等待页面加载, 直到 500ms 内没有网络请求
+      // 另一种等待方式, 比较麻烦: 找出页面用到的所有接口, 使用 waitForResponse 等待所有接口返回
+        waitUntil: "networkidle0",
+      }
+    );
+    console.log(name, 'waiting elements')
+    await waitForFns(page, waitArr);
+    
+    console.log(name, 'waiting screenshot')
+    let clipList = await getClipList(page);
+    // decrease fail rates
+    await page.waitFor(2000);
+    return {page, clipList};
+}
 
 async function testRunner(browser, option) {
   const {
     name,
     waitArr,
     cookie,
-    path,
     host,
     PAGE_TIMEOUT
   } = option;
+  let {
+    path
+  } = option;
+  // if (process.env.NODE_ENV === 'dev') {
+  //   path = path.replace('/report', '');
+  // }
     console.log('start running', name, path)
     const page = await browser.newPage();
     // await page.setViewport({width: 800, height: 600, deviceScaleFactor: 0.8})
@@ -93,10 +211,10 @@ async function testRunner(browser, option) {
       
       console.log(name, 'waiting screenshot')
       let image = await takeFullPageScreenShot(page);
-      await page.close();
 
       console.log(name, 'waiting assertion')
       expect(image).toMatchImageSnapshot()
+      await page.close();
       console.log('stop running', name)
     } catch (error) {
       await page.screenshot({path: `./tmp/${name}-error.png`})
@@ -218,6 +336,8 @@ async function xgkKnowledgeReportRunner(browser, config) {
 }
 
 module.exports = {
+  drillingRunner,
   ZoubanStudentReportRunner,
-  testRunner
+  testRunner,
+  pdfRunner
 }

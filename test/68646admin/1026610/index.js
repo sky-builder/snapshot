@@ -1,11 +1,10 @@
-
-const axios = require('axios')
+const axios = require("axios");
 const puppeteer = require("puppeteer");
 const { toMatchImageSnapshot } = require("jest-image-snapshot");
 
 const config = require("./config");
-const reportList = require('./report-list.json');
-const utils = require('../../utils');
+const reportList = require("./report-list.json");
+const utils = require("../../utils");
 
 let cookie;
 let browser;
@@ -13,27 +12,20 @@ let browser;
 const loginApi = config.getLoginApi(config.userInfo.id);
 
 expect.extend({ toMatchImageSnapshot });
-
 beforeAll(async (done) => {
-  browser = await puppeteer.launch(
-    {
-      // headless: false,
-      args: [ 
-        '--no-sandbox', 
-        '--disable-dev-shm-usage'
-      ]
-    }
-  );
+  browser = await puppeteer.launch({
+    // headless: false,
+    args: ["--no-sandbox", "--disable-dev-shm-usage"],
+  });
   let res = await axios.get(loginApi);
   let token = res.data.data.token;
   cookie = {
-    name: 'fxtoken',
+    name: "fxtoken",
     value: token,
-    domain: '.haofenshu.com',
-  }
+    domain: ".haofenshu.com",
+  };
   done();
 });
-
 let examDesc = `${config.examInfo.name}(${config.examInfo.id})`;
 let userDesc = `${config.userInfo.name}(${config.userInfo.id})`;
 
@@ -55,6 +47,7 @@ describe(userDesc + examDesc, () => {
           });
           expect(image).toMatchImageSnapshot();
         }
+        await page.close();
       })
     } else {
       test(`${name}`, async () => {
