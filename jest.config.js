@@ -1,7 +1,7 @@
 module.exports = {
   testMatch: ['**/test/**/*.js'],
   // testPathIgnorePatterns : ['config', '1500/', 'bjssyxxadmin/', 'fdsjxxadmin/', '43257/', 'utils.js', '1167458/', '1185269/'],
-  testPathIgnorePatterns : ['config', '1500/', '43257/', 'utils.js', '1167458/', '1185269/'],
+  testPathIgnorePatterns : ['config', '1500/', '43257/', 'utils.js', '1167458/'],
   testTimeout: 60 * 1000 * 30,
   // bail: 1,
   "reporters": [

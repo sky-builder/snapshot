@@ -37,15 +37,31 @@ let examDesc = `${config.examInfo.name}(${config.examInfo.id})`;
 let userDesc = `${config.userInfo.name}(${config.userInfo.id})`;
 
 describe(userDesc + examDesc, () => {
-  const list = reportList.filter(item => !item.isCustom);
-  for(let i = 0; i < list.length; i += 1) {
-    if (list[i].isSkip) continue;
-    test(list[i].name, async () => {
-      const options = Object.assign({}, config, list[i], {cookie})
-      let runner = list[i].runner;
-      await utils[runner](browser, options);
-    })
-  }
+  reportList.forEach(item => {
+    if (item.isSkip) return;
+    let {
+      name,
+      runner,
+      isPdf
+    } = item;
+    if (isPdf) {
+      test(`${name}-PDF`, async () => {
+        const options = Object.assign({}, config, item, { cookie });
+        let { page, clipList } = await utils[runner](browser, options);
+        for (let i = 0; i < clipList.length; i += 1) {
+          let image = await page.screenshot({
+            clip: clipList[i],
+          });
+          expect(image).toMatchImageSnapshot();
+        }
+      })
+    } else {
+      test(`${name}`, async () => {
+        const options = Object.assign({}, config, item, { cookie });
+        await utils[runner](browser, options);
+      })
+    }
+  })
 });
 
 afterAll(async (done) => {
