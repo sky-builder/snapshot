@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test-dev": "cross-env NODE_ENV=dev jest  --verbose=true --silent=false",
+    "test-dev": "cross-env NODE_ENV=dev jest --verbose=true --silent=false",
     "test-test": "cross-env NODE_ENV=test jest  --verbose=true --silent=false",
     "test-gray": "cross-env NODE_ENV=gray jest  --verbose=true --silent=false",
     "test-prod": "cross-env NODE_ENV=production jest  --verbose=true --silent=false",

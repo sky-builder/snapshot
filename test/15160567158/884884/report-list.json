@@ -1,0 +1,1 @@
+[{"name":"统考总体分析报告-报表","path":"/report/class?examid=884884-3728&grade=高一&org=1&lkschool=3728","runner":"testRunner","waitArr":["document.querySelectorAll('canvas').length === 4","document.querySelectorAll('.el-table').length === 9"],"isSkip":false}]
