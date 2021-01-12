@@ -39,7 +39,10 @@ let userDesc = `${config.userInfo.name}(${config.userInfo.id})`;
 
 describe(userDesc + examDesc, () => {
   reportList.forEach(item => {
-    if (item.isSkip) return;
+    if (item.isSkip) {
+      test.todo(item.name)
+      return;
+    }
     let {
       name,
       runner,
