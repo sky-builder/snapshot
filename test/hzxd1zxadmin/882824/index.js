@@ -13,6 +13,9 @@ const loginApi = config.getLoginApi(config.userInfo.id);
 
 expect.extend({ toMatchImageSnapshot });
 beforeAll(async (done) => {
+  if (!reportList.some(item => !item.isSkip)) {
+    return;
+  }
   browser = await puppeteer.launch({
     // headless: false,
     args: ["--no-sandbox", "--disable-dev-shm-usage"],
@@ -62,6 +65,9 @@ describe(userDesc + examDesc, () => {
 });
 
 afterAll(async (done) => {
+  if (!reportList.some(item => !item.isSkip)) {
+    return;
+  }
   await browser.close();
   done();
 });
