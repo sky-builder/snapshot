@@ -51,12 +51,12 @@ html(lang="en")
           h6(class="subtitle is-6") 目前支持的用例, 以 "账号id-考试id-报表类型" 三级格式进行组织, 通过勾选和取消勾选来确定测试范围
           ul
             each item in testCases
-              li(class="test__user-id" data-id=item.userId)= item.userId
+              li(class="test__user-id" data-id=item.userId)= `${item.username}(${item.userId})`
                 ul
                   each e in item.examList
-                    li(class='test__exam-id' data-id=e.examId)= e.examId
+                    li(class='test__exam-id' data-id=e.examId)= `${e.examName}(${e.examId})`
                       ul
-                        each r in e.reportList  
+                        each r in e.testCases  
                           li(class='test__report-name' data-id=r.name)
                             label(for=`${item.userId}-${e.examId}-${r.name}`)= r.name
                             span &nbsp;

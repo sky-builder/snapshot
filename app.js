@@ -45,16 +45,48 @@ app.use(express.static(public))
 app.use('/reports', express.static(reports))
 app.use('/images', express.static(images), serveIndex(images, {'icons': true}))
 
+function format(configObject) {
+  let result = [];
+  let userIds = Object.keys(configObject);
+  userIds.forEach(userId => {
+    let user = configObject[userId];
+    let username = user.name;
+    let obj = {
+      userId,
+      username,
+    }
+    let examList = [];
+    obj['examList'] = examList
+    let examIds = Object.keys(user.idExamMap);
+    examIds.forEach(examId => {
+      let exam = user.idExamMap[examId];
+      let examName = exam.name;
+      let examObj = {
+        examId,
+        examName,
+        testCases: exam.testCases
+      }
+      examList.push(examObj);
+    }) 
+    result.push(obj);
+  })
+  return result;
+}
+
 app.get('/', function (req, res) {
   let testResults = db.get('TestResults')
     .orderBy('endTime', 'desc')
     .take(10)
     .value()
-  let testCases = require('./sync.json')
+  let testCases = fse.readFileSync('./test/test-cases.json')
+  testCases = testCases.toString();
+  testCases = JSON.parse(testCases);
+  let testCases2 = format(testCases);
+  console.log({testCases2})
   let payload = {
     humanizeDuration,
     testResults: testResults,
-    testCases: testCases
+    testCases: testCases2
   }
   res.render('index', payload)
 })
@@ -89,24 +121,24 @@ app.post('/test-test', (req, res) => {
 // 将用户选择的测试范围用来更新 report-list.json
 app.post('/sync', async(req, res) => {
   let { cases } = req.body;
-  if (cases) {
-    cases.forEach(c => {
+    if (cases) {
+      let reportListPath = path.join(__dirname, 'test', 'test-cases.json');
+      let reportList = fse.readFileSync(reportListPath);
+      reportList = reportList.toString();
+      reportList = JSON.parse(reportList);
+      cases.forEach(c => {
       let userId = c.userId;
       c.examList.forEach(e => {
         let examId = e.examId;
-        let reportListPath = path.join(__dirname, 'test', userId, examId, 'report-list.json');
-        let reportList = fse.readFileSync(reportListPath);
-        reportList = reportList.toString();
-        reportList = JSON.parse(reportList);
         e.reportList.forEach(re => {
-          let match = reportList.find(item => item.name === re.name);
+          let match = reportList[userId].idExamMap[examId].testCases.find(item => item.name === re.name);
           if (match) {
             match.isSkip = re.isSkip;
           }
         })
-        fse.writeFileSync(reportListPath, JSON.stringify(reportList));
       })
     })
+    fse.writeFileSync(reportListPath, JSON.stringify(reportList));
   }
   res.end('ok')
 })
