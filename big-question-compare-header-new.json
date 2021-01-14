@@ -1,0 +1,85 @@
+{
+  "title": "试题汇总-undefined-undefined-按大题分析",
+  "name": "按大题分析",
+  "header": [
+    {
+      "label": "学校",
+      "prop": "school",
+      "fixed": true,
+      "width": 18
+    },
+    {
+      "label": "一",
+      "childs": [
+        {
+          "label": "满分",
+          "prop": "manfen_0"
+        },
+        {
+          "label": "平均分",
+          "prop": "mean_0"
+        },
+        {
+          "label": "标准差",
+          "prop": "standardDeviation_0"
+        },
+        {
+          "label": "难度",
+          "prop": "difficulty_0"
+        },
+        {
+          "label": "难度描述",
+          "prop": "difficultyDescribe_0"
+        },
+        {
+          "label": "区分度",
+          "prop": "separation_0"
+        },
+        {
+          "label": "区分度描述",
+          "prop": "separationDescribe_0"
+        },
+        {
+          "label": "满分人数",
+          "prop": "manfenCount_0"
+        },
+        {
+          "label": "满分人数占比",
+          "prop": "manfenRate_0",
+          "isPercent": true
+        },
+        {
+          "label": "零分人数",
+          "prop": "zeroCount_0"
+        },
+        {
+          "label": "零分人数占比",
+          "prop": "zeroRate_0",
+          "isPercent": true
+        }
+      ]
+    }
+  ],
+  "data": [
+    {
+      "school": "联考全体",
+      "question_0": "一",
+      "manfen_0": 150,
+      "mean_0": {
+        "value": 96.45,
+        "style": {
+          "color": "#ff0000"
+        }
+      },
+      "standardDeviation_0": 11.65,
+      "difficulty_0": 0.64,
+      "difficultyDescribe_0": "容易",
+      "separation_0": 1,
+      "separationDescribe_0": "很好",
+      "manfenCount_0": 0,
+      "manfenRate_0": "0%",
+      "zeroCount_0": 0,
+      "zeroRate_0": "0%"
+    }
+  ]
+}

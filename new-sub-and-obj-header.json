@@ -1,0 +1,73 @@
+[
+  {
+    "label": "学校",
+    "prop": "school",
+    "fixed": true,
+    "width": 18,
+    "hidden": false
+  },
+  {
+    "label": "客观题",
+    "childs": [
+      {
+        "label": "平均分",
+        "prop": "mean"
+      },
+      {
+        "label": "平均得分率",
+        "prop": "meanRate",
+        "isPercent": true
+      },
+      {
+        "label": "满分人数",
+        "prop": "manfenCount"
+      },
+      {
+        "label": "满分人数占比",
+        "prop": "manfenRate",
+        "isPercent": true
+      },
+      {
+        "label": "零分人数",
+        "prop": "zeroCount"
+      },
+      {
+        "label": "零分人数占比",
+        "prop": "zeroRate",
+        "isPercent": true
+      }
+    ]
+  },
+  {
+    "label": "主观题",
+    "childs": [
+      {
+        "label": "平均分",
+        "prop": "mean"
+      },
+      {
+        "label": "平均得分率",
+        "prop": "meanRate",
+        "isPercent": true
+      },
+      {
+        "label": "满分人数",
+        "prop": "manfenCount"
+      },
+      {
+        "label": "满分人数占比",
+        "prop": "manfenRate",
+        "isPercent": true
+      },
+      {
+        "label": "零分人数",
+        "prop": "zeroCount"
+      },
+      {
+        "label": "零分人数占比",
+        "prop": "zeroRate",
+        "isPercent": true
+      }
+    ]
+  }
+]

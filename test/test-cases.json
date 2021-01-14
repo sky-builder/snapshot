@@ -1,0 +1,358 @@
+{
+  "15160567158": {
+    "idExamMap": {
+      "884884": {
+        "name": "宁德市2019-20学年第二学期高一期末质量检测",
+        "testCases": [
+          {
+            "name": "班级分析报告-报表",
+            "path": "/report/class?examid=884884-3728&grade=高一&org=1&lkschool=3728",
+            "runner": "testRunner",
+            "waitArr": [
+              "document.querySelectorAll('canvas').length === 4",
+              "document.querySelectorAll('.el-table').length === 9"
+            ],
+            "isSkip": false
+          }
+        ]
+      }
+    },
+    "name": "李素馨"
+  },
+  "63777admin": {
+    "idExamMap": {
+      "1026610": {
+        "name": "2019-2020年第二学年度海东市八年级学业水平测试",
+        "testCases": [
+          {
+            "name": "统考总体分析报告-PDF",
+            "path": "/report/export?export=true&report=total&examid=1026610-63777&org=1&analyzeType=all&compareType=all&qxId=&schoolId=",
+            "runner": "pdfRunner",
+            "waitArr": [
+              "document.querySelectorAll('.index-tree').length >= 1",
+              "document.querySelector('.el-loading-mask.is-fullscreen').style.display === 'none'"
+            ],
+            "isSkip": true
+          }
+        ]
+      }
+    },
+    "name": "海东市互助县教育局教研室超级管理员"
+  },
+  "68646admin": {
+    "idExamMap": {
+      "1026610": {
+        "name": "2019-2020年第二学年度海东市八年级学业水平测试",
+        "testCases": [
+          {
+            "name": "统考总体分析报告-整体对比分析-报表",
+            "path": "/report/total?examid=1026610-68646&org=1&grade=初二",
+            "runner": "testRunner",
+            "waitArr": [
+              "document.querySelectorAll('canvas').length === 4",
+              "document.querySelectorAll('.el-table').length >= 20"
+            ],
+            "isSkip": true
+          },
+          {
+            "name": "统考总体分析报告-整体对比分析-PDF",
+            "path": "/report/export?export=true&report=total&examid=1026610-68646&org=1&analyzeType=all&compareType=all&qxId=&schoolId=",
+            "runner": "pdfRunner",
+            "waitArr": [
+              "document.querySelectorAll('.index-tree').length >= 1",
+              "document.querySelector('.el-loading-mask.is-fullscreen').style.display === 'none'"
+            ],
+            "isPdf": true,
+            "isSkip": false
+          },
+          {
+            "name": "统考总体分析报告-单个区县分析-报表",
+            "path": "/report/total?examid=1026610-68646&grade=初二&org=1&qxschool=14984",
+            "runner": "testRunner",
+            "waitArr": [
+              "document.querySelectorAll('canvas').length === 4",
+              "document.querySelectorAll('.el-table').length >= 17"
+            ],
+            "isSkip": false
+          },
+          {
+            "name": "统考总体分析报告-单个区县分析-PDF",
+            "path": "/report/export?export=true&report=total&examid=1026610-68646&org=1&analyzeType=county&compareType=&qxId=14984&schoolId=&qxschool=14984",
+            "runner": "pdfRunner",
+            "waitArr": [
+              "document.querySelectorAll('.index-tree').length >= 1",
+              "document.querySelector('.el-loading-mask.is-fullscreen').style.display === 'none'"
+            ],
+            "isPdf": true,
+            "isSkip": false
+          },
+          {
+            "name": "统考总体分析报告-单个学校-报表",
+            "path": "/report/total?examid=1026610-68646&grade=初二&org=1&lkschool=12794",
+            "runner": "testRunner",
+            "waitArr": [
+              "document.querySelectorAll('canvas').length === 6",
+              "document.querySelectorAll('.el-table').length >= 17"
+            ],
+            "isSkip": false
+          },
+          {
+            "name": "统考总体分析报告-单个学校-PDF",
+            "path": "/report/export?export=true&report=total&examid=1026610-68646&org=1&lkschool=12794&analyzeType=school&compareType=&qxId=&schoolId=12794",
+            "runner": "pdfRunner",
+            "waitArr": [
+              "document.querySelectorAll('.index-tree').length >= 1",
+              "document.querySelector('.el-loading-mask.is-fullscreen').style.display === 'none'"
+            ],
+            "isPdf": true,
+            "isSkip": false
+          },
+          {
+            "name": "命题质量分析报告-整体对比分析-报表",
+            "path": "/report/question?examid=1026610-68646&org=1&grade=初二",
+            "runner": "testRunner",
+            "waitArr": [
+              "document.querySelectorAll('canvas').length === 10",
+              "document.querySelectorAll('.el-table').length >= 8"
+            ],
+            "isSkip": false
+          },
+          {
+            "name": "命题质量分析报告-整体对比分析-PDF",
+            "path": "/report/export/pdf?export=true&report=question&examid=1026610-68646&org=1&analyzeType=all&compareType=all&schoolId=&qxId=&pindex=3945791",
+            "runner": "pdfRunner",
+            "waitArr": [
+              "document.querySelectorAll('.index-tree').length >= 1",
+              "document.querySelector('.el-loading-mask.is-fullscreen').style.display === 'none'"
+            ],
+            "isPdf": true,
+            "isSkip": false
+          },
+          {
+            "name": "命题质量分析报告-单个区县分析-报表",
+            "path": "/report/question?examid=1026610-68646&grade=初二&org=1&qxschool=14984",
+            "runner": "testRunner",
+            "waitArr": [
+              "document.querySelectorAll('canvas').length === 10",
+              "document.querySelectorAll('.el-table').length >= 8"
+            ],
+            "isSkip": false
+          },
+          {
+            "name": "命题质量分析报告-单个区县分析-PDF",
+            "path": "/report/export/pdf?export=true&report=question&examid=1026610-68646&org=1&analyzeType=county&compareType=&qxId=14984&schoolId=&qxschool=14984&pindex=3945791",
+            "runner": "pdfRunner",
+            "waitArr": [
+              "document.querySelectorAll('.index-tree').length >= 1",
+              "document.querySelector('.el-loading-mask.is-fullscreen').style.display === 'none'"
+            ],
+            "isPdf": true,
+            "isSkip": false
+          },
+          {
+            "name": "命题质量分析报告-单个学校-报表",
+            "path": "/report/question?examid=1026610-68646&grade=初二&org=1&lkschool=12794",
+            "runner": "testRunner",
+            "waitArr": [
+              "document.querySelectorAll('canvas').length === 10",
+              "document.querySelectorAll('.el-table').length >= 8"
+            ],
+            "isSkip": false
+          },
+          {
+            "name": "命题质量分析报告-单个学校-PDF",
+            "path": "/report/export/pdf?export=true&report=question&examid=1026610-68646&org=1&lkschool=12794&analyzeType=school&compareType=&qxId=&schoolId=12794&pindex=3945791",
+            "runner": "pdfRunner",
+            "waitArr": [
+              "document.querySelectorAll('.index-tree').length >= 1",
+              "document.querySelector('.el-loading-mask.is-fullscreen').style.display === 'none'"
+            ],
+            "isPdf": true,
+            "isSkip": false
+          }
+        ]
+      }
+    },
+    "name": "海东市教育局"
+  },
+  "bjssyxxadmin": {
+    "idExamMap": {
+      "1164003": {
+        "name": "直升高一Unit4单元测试",
+        "testCases": [
+          {
+            "name": "班级分析报告-报表",
+            "path": "/report/class?examid=1164003-84&grade=直升高一&org=0",
+            "runner": "testRunner",
+            "waitArr": [
+              "document.querySelectorAll('canvas').length === 2",
+              "document.querySelectorAll('.el-table').length === 4"
+            ],
+            "isSkip": false
+          },
+          {
+            "name": "校级分析报告-报表",
+            "path": "/report/total?examid=1164003-84&grade=直升高一&org=0",
+            "runner": "testRunner",
+            "waitArr": [
+              "document.querySelectorAll('canvas').length === 6",
+              "document.querySelectorAll('.el-table').length >= 15"
+            ],
+            "isSkip": false
+          },
+          {
+            "name": "校级分析报告-PDF",
+            "path": "/report/export?export=true&report=total&examid=1164003-84&org=0",
+            "runner": "pdfRunner",
+            "waitArr": [
+              "document.querySelectorAll('.index-tree').length >= 1",
+              "document.querySelector('.el-loading-mask.is-fullscreen').style.display === 'none'"
+            ],
+            "isPdf": true,
+            "isSkip": false
+          }
+        ]
+      },
+      "1185269": {
+        "name": "高一年级生物第5次单元测试",
+        "testCases": [
+          {
+            "name": "学生成绩分析",
+            "path": "/report/student?examid=1185269-84&org=0&grade=高一",
+            "runner": "ZoubanStudentReportRunner",
+            "waitArr": [
+              "document.querySelectorAll('canvas').length === 1",
+              "document.querySelectorAll('.el-table').length === 2"
+            ],
+            "isSkip": false
+          },
+          {
+            "name": "教学班成绩明细查看-报表",
+            "path": "/report/lesson?examid=1185269-84&grade=高一&org=0",
+            "runner": "testRunner",
+            "waitArr": [
+              "document.querySelectorAll('canvas').length === 2",
+              "document.querySelectorAll('.el-table').length === 4"
+            ],
+            "isSkip": false
+          },
+          {
+            "name": "命题质量分析-报表",
+            "path": "/report/question?examid=1185269-84&org=0&grade=高一",
+            "runner": "testRunner",
+            "waitArr": [
+              "document.querySelectorAll('canvas').length === 11",
+              "document.querySelectorAll('.el-table').length === 8"
+            ],
+            "isSkip": false
+          },
+          {
+            "name": "命题质量分析-PDF",
+            "path": "/report/export/pdf?export=true&report=question&examid=1185269-84&org=0&pindex=4570834",
+            "runner": "pdfRunner",
+            "waitArr": [
+              "document.querySelectorAll('.index-tree').length === 1",
+              "document.querySelector('.el-loading-mask.is-fullscreen').style.display === 'none'"
+            ],
+            "isPdf": true,
+            "isSkip": false
+          }
+        ]
+      }
+    },
+    "name": "北京市十一学校超级管理员"
+  },
+  "fdsjxxadmin": {
+    "idExamMap": {
+      "1079294": {
+        "name": "福鼎市2020-21学年第一学期初三期中质量检测",
+        "testCases": [
+          {
+            "name": "统考总体分析报告-报表",
+            "path": "/report/total?examid=1079294-12205&grade=初三&org=1",
+            "runner": "testRunner",
+            "waitArr": [
+              "document.querySelectorAll('canvas').length === 4",
+              "document.querySelectorAll('.el-table').length >= 15"
+            ],
+            "isSkip": false
+          },
+          {
+            "name": "统考总体分析报告-PDF",
+            "path": "/report/export?export=true&report=total&examid=1079294-12205&org=1",
+            "runner": "pdfRunner",
+            "waitArr": [
+              "document.querySelectorAll('.index-tree').length >= 1",
+              "document.querySelector('.el-loading-mask.is-fullscreen').style.display === 'none'"
+            ],
+            "isPdf": true,
+            "isSkip": false
+          },
+          {
+            "name": "统考总体分析报告-总分分档上线人数分布-全体一档人数钻取",
+            "path": "/report/total?examid=1079294-12205&grade=初三&org=1",
+            "runner": "drillingRunner",
+            "waitArr": [
+              "document.querySelectorAll('canvas').length === 4",
+              "document.querySelectorAll('.el-table').length >= 15"
+            ],
+            "drillingSelector": "#reset > section.total-report > main > div:nth-child(3) > div > section > div:nth-child(3) > section > section > div > div.el-table__body-wrapper.is-scrolling-none > table > tbody > tr:nth-child(1) > td > div > section > button",
+            "studentDialogSelector": "#reset > section.total-report > main > div:nth-child(3) > div > section > div:nth-child(3) > section > section > section.student-dialog > div > div",
+            "isSkip": false
+          },
+          {
+            "name": "统考总体分析报告-临界生群体分析-一全体一档临界生人数钻取",
+            "path": "/report/total?examid=1079294-12205&grade=初三&org=1",
+            "runner": "drillingRunner",
+            "waitArr": [
+              "document.querySelectorAll('canvas').length === 4",
+              "document.querySelectorAll('.el-table').length >= 15"
+            ],
+            "drillingSelector": "#reset > section.total-report > main > div:nth-child(4) > div > section > section > section > div > div.el-table__body-wrapper.is-scrolling-none > table > tbody > tr:nth-child(1) > td > div > section > button",
+            "studentDialogSelector": "#reset > section.total-report > main > div:nth-child(4) > div > section > section > section > section.student-dialog > div > div",
+            "isSkip": false
+          },
+          {
+            "name": "命题质量分析报告-报表",
+            "path": "/report/question?examid=1079294-12205&grade=初三&org=1",
+            "runner": "testRunner",
+            "waitArr": [
+              "document.querySelectorAll('canvas').length === 9",
+              "document.querySelectorAll('.el-table').length >= 7"
+            ],
+            "isSkip": false
+          },
+          {
+            "name": "命题质量分析报告-PDF",
+            "path": "/report/export/pdf?export=true&report=question&examid=1079294-12205&org=1&pindex=4126283",
+            "runner": "pdfRunner",
+            "waitArr": [
+              "document.querySelectorAll('.index-tree').length >= 1",
+              "document.querySelector('.el-loading-mask.is-fullscreen').style.display === 'none'"
+            ],
+            "isPdf": true,
+            "isSkip": false
+          }
+        ]
+      },
+      "1167458": {
+        "name": "2020-2021高一第2次月考",
+        "testCases": [
+          {
+            "name": "统考总体分析报告-总分分档上线人数分布-全体一档人数钻取",
+            "path": "/report/total?examid=1167458-12205&org=0&grade=高一",
+            "runner": "drillingRunner",
+            "waitArr": [
+              "document.querySelectorAll('canvas').length === 6",
+              "document.querySelectorAll('.el-table').length >= 15"
+            ],
+            "drillingSelector": "#reset > section.total-report > main > div:nth-child(3) > div > section > div:nth-child(3) > section > section > div > div.el-table__body-wrapper.is-scrolling-none > table > tbody > tr:nth-child(1) > td > div > section > button",
+            "studentDialogSelector": "#reset > section.total-report > main > div:nth-child(3) > div > section > div:nth-child(3) > section > section > section.student-dialog > div > div",
+            "isSkip": false
+          }
+        ]
+      }
+    },
+    "name": "福鼎市进修校"
+  }
+}

@@ -1,0 +1,318 @@
+[
+  { "label": "学校", "prop": "group", "fixed": true, "minWidth": 145 },
+  {
+    "label": "16",
+    "childs": [
+      {
+        "label": "满分",
+        "prop": "manfen-0",
+        "sortable": "custom",
+        "minWidth": 74
+      },
+      {
+        "label": "平均分",
+        "prop": "mean-0",
+        "sortable": "custom",
+        "minWidth": 86
+      },
+      {
+        "label": "标准差",
+        "prop": "standardDeviation-0",
+        "sortable": "custom",
+        "minWidth": 86
+      },
+      {
+        "label": "难度",
+        "prop": "difficulty-0",
+        "sortable": "custom",
+        "minWidth": 74
+      },
+      { "label": "难度描述", "prop": "difficulty-dec-0", "minWidth": 98 },
+      {
+        "label": "区分度",
+        "prop": "separation-0",
+        "sortable": "custom",
+        "minWidth": 86
+      },
+      { "label": "区分度描述", "prop": "separation-dec-0", "minWidth": 110 },
+      {
+        "label": "满分人数",
+        "prop": "manfenCount-0",
+        "sortable": "custom",
+        "minWidth": 98
+      },
+      {
+        "label": "满分人数占比",
+        "prop": "manfenRate-0",
+        "formatter": "percentage",
+        "sortable": "custom",
+        "minWidth": 122
+      },
+      {
+        "label": "零分人数",
+        "prop": "zeroCount-0",
+        "sortable": "custom",
+        "minWidth": 98
+      },
+      {
+        "label": "零分人数占比",
+        "prop": "zeroRate-0",
+        "formatter": "percentage",
+        "sortable": "custom",
+        "minWidth": 122
+      }
+    ]
+  },
+  {
+    "label": "一",
+    "childs": [
+      {
+        "label": "满分",
+        "prop": "manfen-1",
+        "sortable": "custom",
+        "minWidth": 74
+      },
+      {
+        "label": "平均分",
+        "prop": "mean-1",
+        "sortable": "custom",
+        "minWidth": 86
+      },
+      {
+        "label": "标准差",
+        "prop": "standardDeviation-1",
+        "sortable": "custom",
+        "minWidth": 86
+      },
+      {
+        "label": "难度",
+        "prop": "difficulty-1",
+        "sortable": "custom",
+        "minWidth": 74
+      },
+      { "label": "难度描述", "prop": "difficulty-dec-1", "minWidth": 98 },
+      {
+        "label": "区分度",
+        "prop": "separation-1",
+        "sortable": "custom",
+        "minWidth": 86
+      },
+      { "label": "区分度描述", "prop": "separation-dec-1", "minWidth": 110 },
+      {
+        "label": "满分人数",
+        "prop": "manfenCount-1",
+        "sortable": "custom",
+        "minWidth": 98
+      },
+      {
+        "label": "满分人数占比",
+        "prop": "manfenRate-1",
+        "formatter": "percentage",
+        "sortable": "custom",
+        "minWidth": 122
+      },
+      {
+        "label": "零分人数",
+        "prop": "zeroCount-1",
+        "sortable": "custom",
+        "minWidth": 98
+      },
+      {
+        "label": "零分人数占比",
+        "prop": "zeroRate-1",
+        "formatter": "percentage",
+        "sortable": "custom",
+        "minWidth": 122
+      }
+    ]
+  },
+  {
+    "label": "二",
+    "childs": [
+      {
+        "label": "满分",
+        "prop": "manfen-2",
+        "sortable": "custom",
+        "minWidth": 74
+      },
+      {
+        "label": "平均分",
+        "prop": "mean-2",
+        "sortable": "custom",
+        "minWidth": 86
+      },
+      {
+        "label": "标准差",
+        "prop": "standardDeviation-2",
+        "sortable": "custom",
+        "minWidth": 86
+      },
+      {
+        "label": "难度",
+        "prop": "difficulty-2",
+        "sortable": "custom",
+        "minWidth": 74
+      },
+      { "label": "难度描述", "prop": "difficulty-dec-2", "minWidth": 98 },
+      {
+        "label": "区分度",
+        "prop": "separation-2",
+        "sortable": "custom",
+        "minWidth": 86
+      },
+      { "label": "区分度描述", "prop": "separation-dec-2", "minWidth": 110 },
+      {
+        "label": "满分人数",
+        "prop": "manfenCount-2",
+        "sortable": "custom",
+        "minWidth": 98
+      },
+      {
+        "label": "满分人数占比",
+        "prop": "manfenRate-2",
+        "formatter": "percentage",
+        "sortable": "custom",
+        "minWidth": 122
+      },
+      {
+        "label": "零分人数",
+        "prop": "zeroCount-2",
+        "sortable": "custom",
+        "minWidth": 98
+      },
+      {
+        "label": "零分人数占比",
+        "prop": "zeroRate-2",
+        "formatter": "percentage",
+        "sortable": "custom",
+        "minWidth": 122
+      }
+    ]
+  },
+  {
+    "label": "三",
+    "childs": [
+      {
+        "label": "满分",
+        "prop": "manfen-3",
+        "sortable": "custom",
+        "minWidth": 74
+      },
+      {
+        "label": "平均分",
+        "prop": "mean-3",
+        "sortable": "custom",
+        "minWidth": 86
+      },
+      {
+        "label": "标准差",
+        "prop": "standardDeviation-3",
+        "sortable": "custom",
+        "minWidth": 86
+      },
+      {
+        "label": "难度",
+        "prop": "difficulty-3",
+        "sortable": "custom",
+        "minWidth": 74
+      },
+      { "label": "难度描述", "prop": "difficulty-dec-3", "minWidth": 98 },
+      {
+        "label": "区分度",
+        "prop": "separation-3",
+        "sortable": "custom",
+        "minWidth": 86
+      },
+      { "label": "区分度描述", "prop": "separation-dec-3", "minWidth": 110 },
+      {
+        "label": "满分人数",
+        "prop": "manfenCount-3",
+        "sortable": "custom",
+        "minWidth": 98
+      },
+      {
+        "label": "满分人数占比",
+        "prop": "manfenRate-3",
+        "formatter": "percentage",
+        "sortable": "custom",
+        "minWidth": 122
+      },
+      {
+        "label": "零分人数",
+        "prop": "zeroCount-3",
+        "sortable": "custom",
+        "minWidth": 98
+      },
+      {
+        "label": "零分人数占比",
+        "prop": "zeroRate-3",
+        "formatter": "percentage",
+        "sortable": "custom",
+        "minWidth": 122
+      }
+    ]
+  },
+  {
+    "label": "四",
+    "childs": [
+      {
+        "label": "满分",
+        "prop": "manfen-4",
+        "sortable": "custom",
+        "minWidth": 74
+      },
+      {
+        "label": "平均分",
+        "prop": "mean-4",
+        "sortable": "custom",
+        "minWidth": 86
+      },
+      {
+        "label": "标准差",
+        "prop": "standardDeviation-4",
+        "sortable": "custom",
+        "minWidth": 86
+      },
+      {
+        "label": "难度",
+        "prop": "difficulty-4",
+        "sortable": "custom",
+        "minWidth": 74
+      },
+      { "label": "难度描述", "prop": "difficulty-dec-4", "minWidth": 98 },
+      {
+        "label": "区分度",
+        "prop": "separation-4",
+        "sortable": "custom",
+        "minWidth": 86
+      },
+      { "label": "区分度描述", "prop": "separation-dec-4", "minWidth": 110 },
+      {
+        "label": "满分人数",
+        "prop": "manfenCount-4",
+        "sortable": "custom",
+        "minWidth": 98
+      },
+      {
+        "label": "满分人数占比",
+        "prop": "manfenRate-4",
+        "formatter": "percentage",
+        "sortable": "custom",
+        "minWidth": 122
+      },
+      {
+        "label": "零分人数",
+        "prop": "zeroCount-4",
+        "sortable": "custom",
+        "minWidth": 98
+      },
+      {
+        "label": "零分人数占比",
+        "prop": "zeroRate-4",
+        "formatter": "percentage",
+        "sortable": "custom",
+        "minWidth": 122
+      }
+    ]
+  }
+]
