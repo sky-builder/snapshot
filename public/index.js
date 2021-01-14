@@ -24,6 +24,25 @@ var term = new Terminal({
 });
 
 let isLoading = false;
+function findInput(target) {
+  // may be li
+  // may be label
+  // may be input
+  let name = target.nodeName.toLowerCase()
+  let result;
+  if (name === 'input') result = target;
+  if (name === 'label') result = target.nextElementSibling.nextElementSibling
+  if (name === 'li') result = target.querySelector('input');
+  return result;
+}
+function findLi(target) {
+  let name = target.nodeName.toLowerCase();
+  let result;
+  if (name === 'input') result = target.parentElement;
+  if (name === 'label') result = target.parentElement
+  if (name === 'li') result = target;
+  return result;
+}
 window.onload = () => {
   let runningTest = document.querySelector('.test__result--running');
   console.log('running', runningTest)
@@ -31,6 +50,72 @@ window.onload = () => {
     isLoading = true;
     this.updateButtonState()
   }
+
+  let ul = document.querySelector('.test-cases');
+  console.log('ye')
+  ul.addEventListener('click', (e) => {
+    let target = e.target;
+    // label will also trigger input's click, if the are bounding together by id.
+    if (!['input', 'li'].includes(target.nodeName.toLowerCase())) {
+      console.log('pity')
+      return;
+    }
+    let input = findInput(target);
+    let li = findLi(target);
+    let checked = input.checked;
+    let userId = li.getAttribute('data-user-id');
+    let examId = li.getAttribute('data-exam-id')
+    let testId = li.getAttribute('data-test-id')
+    function toggleTarget(target, checked) {
+      if (checked) {
+        target.checked = true;
+      } else {
+        target.checked = false;
+        // target.removeAttribute('checked')
+      }
+    }
+    function toggleParent(li) {
+      let parentLi = li.parentElement.parentElement;
+      let inputChildren = parentLi.querySelectorAll('ul input')
+      let parentInput = parentLi.querySelector('input');
+      inputChildren = Array.from(inputChildren);
+      inputChildren = inputChildren.filter(item => item !== parentInput);
+      let isAllChecked = inputChildren.every(item => item.checked)
+      let isAllUnchecked = inputChildren.every(item => !item.checked);
+      if (isAllChecked) {
+        parentInput.checked = true;
+      }
+      if (isAllUnchecked) {
+        parentInput.checked = false;
+      }
+      if (parentLi.getAttribute('data-exam-id')) {
+        toggleParent(parentLi);
+      }
+    }
+    if (testId) {
+      // let target = document.querySelector(`[data-user-id="${userId}"] [data-exam-id="${examId}"] [data-test-id="${testId}"] input`)
+      // toggleTarget(target, checked);
+      toggleParent(li);
+    } else if (examId) {
+      let self = li.querySelector('input')
+      let targets = document.querySelectorAll(`[data-user-id="${userId}"] [data-exam-id="${examId}"] input`);
+      targets = Array.from(targets);
+      targets.forEach(target => {
+        if (target === self) return;
+        toggleTarget(target, checked);
+      })
+      toggleParent(li);
+    } else if (userId) {
+      let self = li.querySelector('input')
+      let targets = document.querySelectorAll(`[data-user-id="${userId}"] input`);
+      targets = Array.from(targets);
+      targets.forEach(target => {
+        if (target === self) return;
+        console.log(target, checked)
+        toggleTarget(target, checked);
+      })
+    }
+  })
 }
 
 term.open(document.getElementById("terminal"));
