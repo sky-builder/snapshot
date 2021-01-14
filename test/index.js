@@ -9,14 +9,31 @@ const utils = require("./utils");
 let cookie;
 let browser;
 
-
 expect.extend({ toMatchImageSnapshot });
-
 let userIds = Object.keys(configObject);
+// TODO: add isSkip file to user
+function judgeHasTests(u) {
+  let idExamMap = u.idExamMap;
+  let examIds = Object.keys(idExamMap);
+  for(let i = 0, len = examIds.length; i < len; i += 1) {
+    let examId = examIds[i];
+    let tcs = u.idExamMap[examId].testCases;
+    console.log({tcs})
+    if (tcs.some(item => !item.isSkip)) {
+      return true;
+    }
+  }
+  return false;
+}
 userIds.forEach(userId => {
-  let user = configObject[userId];
-  describe(user.name, () => {
-    beforeAll(async (done) => {
+let user = configObject[userId];
+describe(user.name, () => {
+let hasTests = judgeHasTests(user);
+beforeAll(async (done) => {
+      if (!hasTests) {
+        done();
+        return;
+      }
       browser = await puppeteer.launch({
         // headless: false,
         args: ["--no-sandbox", "--disable-dev-shm-usage"],
@@ -32,6 +49,10 @@ userIds.forEach(userId => {
       done();
     });
     afterAll(async (done) => {
+      if (!hasTests) {
+        done();
+        return;
+      }
       await browser.close();
       done();
     });
@@ -39,9 +60,9 @@ userIds.forEach(userId => {
     examIds.forEach(examId => {
       let exam = user.idExamMap[examId];
       describe(exam.name, () => {
-        let testCases = exam.testCases;
+      let testCases = exam.testCases;
         testCases.forEach(tc => {
-          if (tc.isSkip) {
+      if (tc.isSkip) {
             test.todo(tc.name);
             return;
           }
