@@ -50,6 +50,23 @@ window.onload = () => {
     isLoading = true;
     this.updateButtonState()
   }
+  let arrows = document.querySelectorAll('.arrow')
+  arrows = Array.from(arrows);
+  arrows.forEach(arrow => {
+
+  arrow.addEventListener('click', (e) => {
+    let target = e.target;
+    let li = target
+    while(li.nodeName.toLowerCase() !== 'li') {
+      li = li.parentElement;
+    }
+    if (li.classList.contains('collapse')) {
+      li.classList.remove('collapse')
+    } else {
+      li.classList.add('collapse')
+    }
+  })
+})
 
   let ul = document.querySelector('.test-cases');
   console.log('ye')

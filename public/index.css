@@ -58,9 +58,9 @@ body {
   margin-left: 2rem;
 }
 .test__cases ul li::before {
-  content: '○';
+  /* content: '○';
   padding-right: 2px;
-  font-size: 0.6rem;
+  font-size: 0.6rem; */
 }
 .test__console {
   padding-top: 1rem;
@@ -73,4 +73,30 @@ body {
 
 .flex1 {
   flex: 1;
+}
+
+.test-cases {
+  font-size: 14px;
+  line-height: 1.5;
+  list-style: none;
+}
+li {
+  transition: 0.3s;
+}
+.collapse {
+  height: calc(14px * 1.5);
+  overflow: hidden;
+}
+.collapse .arrow {
+  transform: rotate(0);
+}
+
+.arrow {
+  height: 14px;
+  margin-right: 4px;
+  transform: rotate(90deg);
+}
+.arrow:hover {
+  cursor: pointer;
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.5);
 }
