@@ -2,6 +2,7 @@ const bodyParser = require('body-parser');
 const serveIndex = require('serve-index')
 const express = require('express')
 const app = express();
+var kill = require('tree-kill');
 
 const humanizeDuration = require('humanize-duration')
 
@@ -82,7 +83,6 @@ app.get('/', function (req, res) {
   testCases = testCases.toString();
   testCases = JSON.parse(testCases);
   let testCases2 = format(testCases);
-  console.log({testCases2})
   let payload = {
     humanizeDuration,
     testResults: testResults,
@@ -176,32 +176,57 @@ app.get('/connect', (req, res) => {
     clientList = clientList.filter(client => client.id !== clientId);
   })
 })
+app.post('/cancel', cancel);
 
 app.listen(3000, () => {
   console.log('server listening on port: 3000.');
 })
+let ls;
+function cancel(req, res) {
+  let runningCase = 
+  db.get('TestResults')
+    .find(item => item.status === 'running')
+    .value()
+  if (runningCase) {
+    // ls.stdin.pause();
+    // let k = ls.kill('SIGKILL');
+    let r = kill(ls.pid);
+
+    let endTime = new Date().getTime();
+    runningCase.endTime = endTime;
+    runningCase.status = 'cancel';
+    db.get('TestResults')
+      .find({id: runningCase.id})
+      .assign(runningCase)
+      .write();
+    broadcast(clientList, 'end', runningCase)
+    id += 1; 
+  }
+  res.end('ok')
+}
 
 function run(req, res, cmd) {
   let runningCase = 
-  db.get('testResults')
+  db.get('TestResults')
     .find(item => item.status === 'running')
     .value()
 if (runningCase) {
-  console.log({runningCase})
   res.end('there is running case, please wait.')
   return;
 }
 res.end(cmd, 'is running');
 
 let npm = isWindows ? 'npm.cmd' : 'npm';
-let ls = spawn(npm, ['run', cmd])
+ls = spawn(npm, ['run', cmd])
 
 let isPassed = true;
 let currentTest = {
   id: id,
+  cmd: cmd,
   status: 'running',
   startTime: new Date().getTime(),
 };
+let _id = id;
 broadcast(clientList, 'new', currentTest)
 db.get('TestResults')
   .push(currentTest)
@@ -222,10 +247,12 @@ ls.stderr.on('data', (data) => {
 
 ls.on('close', async (code) => {
   console.log(`child process exited with code ${code}`);
-
+  if (_id !== id) {
+    console.log('last test was updated other place.')
+    return;
+  }
   let endTime = new Date().getTime();
   let tmp = {
-    cmd: cmd,
     endTime,
     status: isPassed ? 'passed' : 'failed',
     imagesPath: `/images/${id}/`,

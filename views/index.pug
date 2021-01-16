@@ -24,7 +24,7 @@ html(lang="en")
                 .test__id= '#' + item.id
                 .test__status running
             else
-              li(class='test__result' data-id=item.id class=item.status === 'passed' ? 'test__result--passed' : 'test__result--failed')
+              li(class='test__result' data-id=item.id class='test__result--' + item.status)
                 .test__id= '#' + item.id
                 .test__status= item.status
                 .test__cmd= '命令: ' + item.cmd
@@ -45,7 +45,7 @@ html(lang="en")
               option(value="gray") 生产环境和灰度环境对比
               option(value="prod") 生产环境和生产环境对比
           span  &nbsp;&nbsp;&nbsp;&nbsp;
-          button(onclick="runTest()" class="button test-button" id="btn-update-test") 运行
+          button(onclick="runTest()" class="button test-button test-button--running" id="btn-update-test") 运行
         div.test__cases
           h5(class="title is-5") 测试用例
           h6(class="subtitle is-6") 目前支持的用例, 以 "账号id-考试id-报表类型" 三级格式进行组织, 通过勾选和取消勾选来确定测试范围

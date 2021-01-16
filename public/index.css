@@ -26,6 +26,9 @@ body {
 .test__result--failed {
   background: linear-gradient(to right,#db4545 0,#db4545 8px,#fff 8px,#fff 100%) no-repeat;
 }
+.test__result--cancel {
+  background: linear-gradient(to right,#9b9898 0,#979393 8px,#fff 8px,#fff 100%) no-repeat;
+}
 
 .test__result:hover {
   transition: box-shadow 0.2s;

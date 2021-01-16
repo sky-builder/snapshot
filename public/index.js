@@ -1,4 +1,7 @@
+var isLoading = false;
+
 async function runTest() {
+  if (!isLoading) {
   await parseCases();
   let select = document.querySelector('select')
   let value = select.value;
@@ -14,6 +17,12 @@ async function runTest() {
   .catch((err) => {
     console.error(err);
   });
+} else {
+  axios.post('/cancel')
+  .then(res => {
+    console.log(res)
+  })
+}
 }
 var term = new Terminal({
   cols: 120,
@@ -23,7 +32,6 @@ var term = new Terminal({
   }
 });
 
-let isLoading = false;
 function findInput(target) {
   // may be li
   // may be label
@@ -141,12 +149,19 @@ const event = new EventSource("/connect");
 const btnUpdateTest = document.getElementById("btn-update-test");
 
 function updateButtonState() {
-  let buttonList = document.querySelectorAll('.test-button')
-  buttonList = Array.from(buttonList)
-  let method = isLoading ? 'add' : 'remove';
-  buttonList.forEach(button => {
-    button.classList[method]("is-loading");
-  })
+  let button = document.querySelector('.test-button')
+  console.log(button)
+  if (isLoading) {
+    if (!button.classList.contains('is-danger')) {
+      button.classList.add('is-danger')
+    }
+    button.innerHTML = '取消'
+  } else {
+    if (button.classList.contains('is-danger')) {
+      button.classList.remove('is-danger')
+    }
+    button.innerHTML = '运行'
+  }
 }
 event.addEventListener('stat', (e) => {
   let payload = JSON.parse(e.data);
@@ -212,11 +227,7 @@ event.addEventListener("end", (e) => {
   let checkImages = document.createElement('a');
   checkImages.href= data.imagesPath;
   checkImages.innerHTML = '查看图片'
-  if (data.status === 'passed') {
-    li.classList.add('test__result--passed')
-  } else {
-    li.classList.add('test__result--failed')
-  }
+  li.classList.add('test__result--' + data.status)
   li.classList.remove('test__result--running')
 
   li.appendChild(cmd)
@@ -233,7 +244,7 @@ event.addEventListener("end", (e) => {
 
 event.addEventListener("new", (e) => {
   let data = JSON.parse(e.data);
-  isLoading = false;
+  isLoading = true;
 
   let li = document.createElement('li')
   li.setAttribute('data-id', data.id)
